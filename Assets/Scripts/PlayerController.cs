@@ -37,6 +37,11 @@ public class PlayerController : MonoBehaviour
             transform.Translate(Vector2.right * speed * Time.deltaTime);
             transform.eulerAngles = new Vector2(0, 0);
         }
+
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            transform.SetPositionAndRotation(new Vector2(-2, 0), transform.rotation);
+        }
         
         if (Input.GetKey(KeyCode.Z) && Time.time > nextJumpPress)
         {
@@ -46,6 +51,7 @@ public class PlayerController : MonoBehaviour
         } else {
             animator.SetBool("Jump", false);
         }
+
 
     }
 }
