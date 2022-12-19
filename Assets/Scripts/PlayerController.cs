@@ -40,7 +40,8 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
-            transform.SetPositionAndRotation(new Vector2(-2, 0), transform.rotation);
+            transform.SetPositionAndRotation(new Vector2(-2, 3), transform.rotation);
+            rigidbody2D.velocity = new Vector2(0f, -1.0f);
         }
         
         if (Input.GetKey(KeyCode.Z) && Time.time > nextJumpPress)
@@ -51,7 +52,7 @@ public class PlayerController : MonoBehaviour
         } else {
             animator.SetBool("Jump", false);
         }
-
+        Debug.Log(rigidbody2D.velocity);
 
     }
 }

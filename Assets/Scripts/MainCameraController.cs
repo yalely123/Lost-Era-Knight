@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class MainCameraController : MonoBehaviour
 {
-    public float dampTime = 0.15f;
-    public Vector3 velocity = Vector2.zero;
+    public float dampTime = 0.05f;
+    public Vector3 velocity = Vector2.zero; // short hand of Vector2(0, 0)
     public Transform target;
     Camera camera;
     void Start()
@@ -16,14 +16,15 @@ public class MainCameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (target)
-        {
-            Vector3 point = camera.WorldToViewportPoint(target.position);
-            Vector3 delta = target.position - camera.ViewportToWorldPoint(
-                                                new Vector3(0.5f, 0.5f, point.z));
-            Vector3 destination = transform.position + delta;
-            transform.position = Vector3.SmoothDamp(transform.position, destination, ref velocity, dampTime);
-        }
         
+        if (target) // checking that target is already set
+        {
+            Vector3 point = camera.WorldToViewportPoint(target.position); // point is current position of player in form of Vector3
+            Vector3 delta = target.position - camera.ViewportToWorldPoint(
+                                                new Vector3(0.5f, point.y, point.z));
+            Vector3 destination = transform.position + delta;
+            transform.position = destination;
+        }
+       
     }
 }

@@ -20,7 +20,7 @@ public class MonsterRandomSpawner : MonoBehaviour
     void Update()
     {
         
-        if (player.transform.position.x > -1f && player.transform.position.y < 0f) // this is condition for spawn monster
+        if (player.transform.position.x > -1f && player.transform.position.y < 1.2f) // this is condition for spawn monster
         {
             if (!isSpawn)
             {
