@@ -16,14 +16,14 @@ public class PlayerHealth : MonoBehaviour
         health = maxHealth;
     }
 
-    void Die()
+    public void Die()
     {
         if (!deadShown) // for Debugging, Die() funciton.
         {
             Debug.Log("You are dead!");
             deadShown = true;
         }
-
+        GameAi.deadCount += 1;
         Destroy(gameObject); // Destroy player object (player is dead, shouldn't show on sceen)
         
     }

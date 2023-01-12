@@ -13,7 +13,7 @@ public class PlayerAttackArea : MonoBehaviour
             PlayerHealth playerhealth = collider.GetComponent<PlayerHealth>();
             playerhealth.ReceiveDamage(damage);
 
-            Debug.Log("attack hit!");
+            // Debug.Log("attack hit player!");
         }
 
         if (collider.GetComponent<MonsterHealth>() != null)
@@ -21,7 +21,7 @@ public class PlayerAttackArea : MonoBehaviour
             MonsterHealth monsterhealth = collider.GetComponent<MonsterHealth>();
             monsterhealth.ReceiveDamage(damage);
 
-            Debug.Log("attack hit monster!");
+            // Debug.Log("attack hit monster!");
         }
     }
 }
