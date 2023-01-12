@@ -52,7 +52,7 @@ public class PlayerController : MonoBehaviour
         } else {
             animator.SetBool("Jump", false);
         }
-        Debug.Log(rigidbody2D.velocity);
+        // Debug.Log(rigidbody2D.velocity);
 
     }
 }

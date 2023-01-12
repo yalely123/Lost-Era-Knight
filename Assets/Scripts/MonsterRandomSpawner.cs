@@ -19,20 +19,24 @@ public class MonsterRandomSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if (player.transform.position.x > -1f && player.transform.position.y < 1.2f) // this is condition for spawn monster
+        if (player != null)
         {
-            if (!isSpawn)
+            if (player.transform.position.x > -1f && player.transform.position.y < 1.2f) // this is condition for spawn monster
             {
-                int randMonster = Random.Range(0, monsterSet.Length);
-                newMonster = Instantiate(monsterSet[randMonster], transform.position, Quaternion.identity);
-                isSpawn = true;
-            }    
-        }else
-        {
-            isSpawn = false;
-            Destroy(newMonster); // this line is temperary one i will des by tag or something that can loop with no bonding with local file variable
+                if (!isSpawn)
+                {
+                    int randMonster = Random.Range(0, monsterSet.Length);
+                    newMonster = Instantiate(monsterSet[randMonster], transform.position, Quaternion.identity);
+                    isSpawn = true;
+                }
+            }
+            else
+            {
+                isSpawn = false;
+                Destroy(newMonster); // this line is temperary one i will des by tag or something that can loop with no bonding with local file variable
+            }
         }
+        
         if (Input.GetKeyDown(KeyCode.N))
         {
             isSpawn = false;

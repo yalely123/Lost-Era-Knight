@@ -8,6 +8,20 @@ public class PlayerAttackArea : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        
+        if (collider.GetComponent<PlayerHealth>() != null)
+        {
+            PlayerHealth playerhealth = collider.GetComponent<PlayerHealth>();
+            playerhealth.ReceiveDamage(damage);
+
+            Debug.Log("attack hit!");
+        }
+
+        if (collider.GetComponent<MonsterHealth>() != null)
+        {
+            MonsterHealth monsterhealth = collider.GetComponent<MonsterHealth>();
+            monsterhealth.ReceiveDamage(damage);
+
+            Debug.Log("attack hit monster!");
+        }
     }
 }
