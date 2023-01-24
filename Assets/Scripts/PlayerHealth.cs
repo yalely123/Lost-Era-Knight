@@ -24,6 +24,7 @@ public class PlayerHealth : MonoBehaviour
             deadShown = true;
         }
         GameAi.deadCount += 1;
+        GameAi.KillAllMonsters();
         Destroy(gameObject); // Destroy player object (player is dead, shouldn't show on sceen)
         
     }

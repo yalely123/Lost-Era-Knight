@@ -21,7 +21,8 @@ public class MonsterRandomSpawner : MonoBehaviour
     {
         if (player != null)
         {
-            if (player.transform.position.x > -1f && player.transform.position.y < 1.2f) // this is condition for spawn monster
+            if (player.transform.position.x > -1f && player.transform.position.x < 2.4 
+                && player.transform.position.y < 1.2f && player.transform.position.y > -2.3) // this is condition for spawn monster
             {
                 if (!isSpawn)
                 {

@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
+        
         rigidbody2D = this.gameObject.GetComponent<Rigidbody2D>();
         animator = this.gameObject.GetComponent<Animator>();
     }
@@ -52,7 +53,12 @@ public class PlayerController : MonoBehaviour
         } else {
             animator.SetBool("Jump", false);
         }
-        // Debug.Log(rigidbody2D.velocity);
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            GameAi.KillAllMonsters();
+        }
+        
 
     }
 }

@@ -13,9 +13,10 @@ GameObject:
   - component: {fileID: 7863910586106670026}
   - component: {fileID: 5485502384776084501}
   - component: {fileID: -6106733975882288313}
+  - component: {fileID: 1492420040346961889}
   m_Layer: 0
   m_Name: Square (1)
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -146,3 +147,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHeath: 100
   health: 0
+--- !u!114 &1492420040346961889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6691902678827424634}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcc5e91dbf0f48c4a952da919db18811, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
