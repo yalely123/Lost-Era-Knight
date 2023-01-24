@@ -6,12 +6,18 @@ public class deadZone : MonoBehaviour
 {
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        Debug.Log("Player touches dead zone!!!");
+        Debug.Log("Object touch dead zone");
 
         if (collider.GetComponent<PlayerHealth>() != null) // call die when player in this zone
         {
-            PlayerHealth playerhealth = collider.GetComponent<PlayerHealth>();
-            playerhealth.Die();
+            PlayerHealth playerHealth = collider.GetComponent<PlayerHealth>();
+            playerHealth.Die();
+        }
+
+        if (collider.GetComponent<MonsterHealth>() != null) 
+        {
+            MonsterHealth monsterHealth = collider.GetComponent<MonsterHealth>();
+            monsterHealth.Die();
         }
     }
 }

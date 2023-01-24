@@ -5,7 +5,7 @@ using UnityEngine;
 public class MonsterSwarm : MonoBehaviour
 {
     private GameObject player;
-    private float speed = 5;
+    private float speed = 2f;
     private Vector3 lookPosition;
     private Rigidbody2D monsterRb;
 

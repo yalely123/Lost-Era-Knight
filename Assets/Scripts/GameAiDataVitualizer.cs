@@ -13,7 +13,7 @@ public class GameAiDataVitualizer : MonoBehaviour
 
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -23,5 +23,6 @@ public class GameAiDataVitualizer : MonoBehaviour
         deadCount = GameAi.deadCount;
         getHitCount = GameAi.getHitCount;
         playerDeadPosition = GameAi.playerDeadPostion;
+
     }
 }

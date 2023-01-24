@@ -34,7 +34,7 @@ public class MonsterRandomSpawner : MonoBehaviour
             else
             {
                 isSpawn = false;
-                Destroy(newMonster); // this line is temperary one i will des by tag or something that can loop with no bonding with local file variable
+                //Destroy(newMonster); // this line is temperary one. Destroy by tag or something that can loop with no bonding with local file variable
             }
         }
         

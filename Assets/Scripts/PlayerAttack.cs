@@ -26,7 +26,6 @@ public class PlayerAttack : MonoBehaviour
         if (Input.GetKey(KeyCode.UpArrow))
         {
             side = "top";
-            Debug.Log("attack top side");
         }
         else if (Input.GetKey(KeyCode.DownArrow))
         {
@@ -70,6 +69,5 @@ public class PlayerAttack : MonoBehaviour
         {
             attackAreaDown.SetActive(attacking);
         }
-        
     }
 }

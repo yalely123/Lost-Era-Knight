@@ -33,7 +33,7 @@ public class MonsterHealth : MonoBehaviour
         }
     }
 
-    void Die() 
+    public void Die()
     {
         Debug.Log("A monster is removed!");
         Destroy(gameObject);
