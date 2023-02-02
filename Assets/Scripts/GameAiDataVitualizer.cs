@@ -10,10 +10,12 @@ public class GameAiDataVitualizer : MonoBehaviour
     [SerializeField] private int getHitCount;
     [SerializeField] private Vector2 playerDeadPosition;
 
+    public GameObject[] monsterPrefab;
+
 
     void Start()
     {
-
+        GameAi.monsterPrefab = monsterPrefab;
     }
 
     // Update is called once per frame

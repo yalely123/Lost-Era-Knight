@@ -11,8 +11,8 @@ public static class GameAi
     public static int getHitCount = 0;
     public static Vector2 playerDeadPostion;
     public static float levelScore;
-    public static GameObject[] monsterPrefab; // cantain all monster prefab of project for monster generating
-                                              // future problem: referencing which is only can acces by index of array.
+    public static GameObject[] monsterPrefab; // contain all monster prefab of project for monster generating
+                                              // future problem: referencing which is only can acces by index of array. not something specific like name of monter
     public static GameObject[] monsterLeft; // contain all monster that still on current level in game hierachy and generating queue
 
     
@@ -61,5 +61,22 @@ public static class GameAi
         // then contain level to class property
         // and return/ call GenerateMonsterByLevel
         // for generating monster in next play round of player
+    }
+
+    public static void spawnMonster(float posX, float posY, int monNum = -1)
+    {
+        int monsterIndex;
+        Vector2 spawnPos = new Vector2(posX, posY);
+        if (monNum == -1)
+        {
+            monsterIndex = Random.Range(0, monsterPrefab.Length);
+        } else
+        {
+            monsterIndex = monNum;
+        }
+
+        Object.Instantiate(monsterPrefab[monsterIndex], spawnPos, Quaternion.identity);
+        // monNum = -1 mean that random spawn of monster
+        // and other mean that spawn monster by monster prefab's index
     }
 }

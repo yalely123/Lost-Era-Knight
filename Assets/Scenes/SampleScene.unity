@@ -686,6 +686,10 @@ MonoBehaviour:
   deadCount: 0
   getHitCount: 0
   playerDeadPosition: {x: 0, y: 0}
+  monsterPrefab:
+  - {fileID: 2579030526747023763, guid: 578eaf954cbc2f84aa4d2ef2befecaee, type: 3}
+  - {fileID: 6691902678827424634, guid: 1853b42aa56f6cc40903ec1a85ee471c, type: 3}
+  - {fileID: 282956105592864656, guid: 05308c271cd9852458f34b492b0d5a0a, type: 3}
 --- !u!114 &815872995
 MonoBehaviour:
   m_ObjectHideFlags: 0

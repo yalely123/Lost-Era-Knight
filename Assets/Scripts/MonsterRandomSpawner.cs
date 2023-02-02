@@ -22,12 +22,11 @@ public class MonsterRandomSpawner : MonoBehaviour
         if (player != null)
         {
             if (player.transform.position.x > -1f && player.transform.position.x < 2.4 
-                && player.transform.position.y < 1.2f && player.transform.position.y > -2.3) // this is condition for spawn monster
+                && player.transform.position.y < 1.2f && player.transform.position.y > -2.3) // this is condition for spawn monster when player in box of area
             {
-                if (!isSpawn)
+                if (!isSpawn) // to prevent repeatedly spawning
                 {
-                    int randMonster = Random.Range(0, monsterSet.Length);
-                    newMonster = Instantiate(monsterSet[randMonster], transform.position, Quaternion.identity);
+                    GameAi.spawnMonster(transform.position.x, transform.position.y);
                     isSpawn = true;
                 }
             }
