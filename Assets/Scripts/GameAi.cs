@@ -39,7 +39,7 @@ public static class GameAi
 
     public static void CreateNewPlayer()
     {
-        // Create new player object when player object is deleted
+        // Create new player object when player object is deleted by dying
         // find how to update status/info of player in GameAI to new player object
     }
 
