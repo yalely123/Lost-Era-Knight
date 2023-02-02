@@ -648,7 +648,6 @@ GameObject:
   m_Component:
   - component: {fileID: 815872993}
   - component: {fileID: 815872994}
-  - component: {fileID: 815872995}
   m_Layer: 0
   m_Name: Game Statistic Board
   m_TagString: Untagged
@@ -690,18 +689,6 @@ MonoBehaviour:
   - {fileID: 2579030526747023763, guid: 578eaf954cbc2f84aa4d2ef2befecaee, type: 3}
   - {fileID: 6691902678827424634, guid: 1853b42aa56f6cc40903ec1a85ee471c, type: 3}
   - {fileID: 282956105592864656, guid: 05308c271cd9852458f34b492b0d5a0a, type: 3}
---- !u!114 &815872995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 815872992}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abff47cef45803e45bbe7a669c52e89a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &952138936 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3965803733216929746, guid: 756b15020796881438c7506132a3d039, type: 3}

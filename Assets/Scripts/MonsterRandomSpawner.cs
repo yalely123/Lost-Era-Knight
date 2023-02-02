@@ -5,7 +5,6 @@ using UnityEngine;
 public class MonsterRandomSpawner : MonoBehaviour
 {
     private GameObject player;
-    private GameObject newMonster;
     public GameObject[] monsterSet;
     [SerializeField]
     private bool isSpawn = false;
@@ -39,7 +38,8 @@ public class MonsterRandomSpawner : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.N))
         {
-            isSpawn = false;
+            //isSpawn = false;
+            GameAi.spawnMonster(transform.position.x, transform.position.y);
         }
     }
 }

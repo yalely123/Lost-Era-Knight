@@ -12,7 +12,6 @@ public class GameAiDataVitualizer : MonoBehaviour
 
     public GameObject[] monsterPrefab;
 
-
     void Start()
     {
         GameAi.monsterPrefab = monsterPrefab;

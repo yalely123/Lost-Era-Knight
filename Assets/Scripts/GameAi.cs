@@ -65,17 +65,17 @@ public static class GameAi
 
     public static void spawnMonster(float posX, float posY, int monNum = -1)
     {
-        int monsterIndex;
+        int monsterPrefabIndex;
         Vector2 spawnPos = new Vector2(posX, posY);
         if (monNum == -1)
         {
-            monsterIndex = Random.Range(0, monsterPrefab.Length);
+            monsterPrefabIndex = Random.Range(0, monsterPrefab.Length);
         } else
         {
-            monsterIndex = monNum;
+            monsterPrefabIndex = monNum;
         }
 
-        Object.Instantiate(monsterPrefab[monsterIndex], spawnPos, Quaternion.identity);
+        Object.Instantiate(monsterPrefab[monsterPrefabIndex], spawnPos, Quaternion.identity);
         // monNum = -1 mean that random spawn of monster
         // and other mean that spawn monster by monster prefab's index
     }
