@@ -21,7 +21,7 @@ public class MainCameraController : MonoBehaviour
         {
             Vector3 point = camera.WorldToViewportPoint(target.position); // point is current position of player in form of Vector3
             Vector3 delta = target.position - camera.ViewportToWorldPoint(
-                                                new Vector3(0.5f, point.y, point.z));
+                                                new Vector3(0.5f, 0.25f, point.z)); // 0.5 means that middle of 
             Vector3 destination = transform.position + delta;
             transform.position = destination;
         }

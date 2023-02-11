@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1597641424
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1597641425}
+  m_Layer: 0
+  m_Name: Ground Check
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1597641425
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1597641424}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3965803733216929746}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3965803732828435618
 GameObject:
   m_ObjectHideFlags: 0
@@ -300,11 +330,12 @@ Transform:
   m_GameObject: {fileID: 3965803733216929759}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2.338, y: -0.205, z: 0}
-  m_LocalScale: {x: 1.5318, y: 1.5318, z: 1.5318}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3965803732971557220}
   - {fileID: 3965803732828435619}
   - {fileID: 3965803732966741113}
+  - {fileID: 1597641425}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -345,8 +376,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1253261691
+  m_SortingLayer: 3
   m_SortingOrder: 1
   m_Sprite: {fileID: -2311659948842064771, guid: 8330aadb3c8e009438d989ccdee5db68, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -369,7 +400,7 @@ Animator:
   m_GameObject: {fileID: 3965803733216929759}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 41035b457b3c7da498f14b702f6d4505, type: 2}
+  m_Controller: {fileID: 9100000, guid: ac2d73929e8cf5340b485e7bd5ce868b, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -391,18 +422,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.25}
+  m_Offset: {x: 0, y: 1.4640788}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 0.21, y: 0.5}
+    oldSize: {x: 1.3125, y: 3.125}
     newSize: {x: 0.21, y: 0.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.21, y: 0.5}
+  m_Size: {x: 1, y: 2.8281577}
   m_EdgeRadius: 0
 --- !u!50 &3965803733216929745
 Rigidbody2D:
@@ -419,7 +450,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 4
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -437,14 +468,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 332964fe642ac9f42899d0d1fbd71b6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  maxSpeed: 10
+  maxSpeed: 15
   jumpSpeed: 9
-  jumpPower: 20
+  jumpPower: 25
   grounded: 0
   jumpRate: 1
   nextJumpPress: 0
   playerHealth: 100
+  movementSpeed: 10
+  jumpForce: 12
+  groundCheck: {fileID: 1597641425}
 --- !u!114 &3965803733216929751
 MonoBehaviour:
   m_ObjectHideFlags: 0
