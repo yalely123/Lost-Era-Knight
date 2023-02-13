@@ -7,10 +7,10 @@ public class MainCameraController : MonoBehaviour
     public float dampTime = 0.05f;
     public Vector3 velocity = Vector2.zero; // short hand of Vector2(0, 0)
     public Transform target;
-    Camera camera;
+    Camera followCamera;
     void Start()
     {
-        camera = GetComponent<Camera>();
+        followCamera = GetComponent<Camera>();
     }
 
     // Update is called once per frame
@@ -19,8 +19,8 @@ public class MainCameraController : MonoBehaviour
         
         if (target) // checking that target is already set
         {
-            Vector3 point = camera.WorldToViewportPoint(target.position); // point is current position of player in form of Vector3
-            Vector3 delta = target.position - camera.ViewportToWorldPoint(
+            Vector3 point = followCamera.WorldToViewportPoint(target.position); // point is current position of player in form of Vector3
+            Vector3 delta = target.position - followCamera.ViewportToWorldPoint(
                                                 new Vector3(0.5f, 0.25f, point.z)); // 0.5 means that middle of 
             Vector3 destination = transform.position + delta;
             transform.position = destination;
