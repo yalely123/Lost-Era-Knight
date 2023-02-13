@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class IdleState : State
 {
-    protected D_idleState stateData;
+    protected D_IdleState stateData;
     protected bool isPlayerInAttRange;
     protected float flipTime;
+    protected bool flipAfterIdle;
+    protected float idleTime;
+    protected bool isIdleTimeOver;
 
-    public IdleState(Entity entity, FiniteStateMachine finiteStateMachine, D_idleState stateData) : base(entity, finiteStateMachine)
+    public IdleState(Entity entity, FiniteStateMachine finiteStateMachine, string animBoolName, D_IdleState stateData)
+        : base(entity, finiteStateMachine, animBoolName)
     {
         this.stateData = stateData;
     }
@@ -17,21 +21,30 @@ public class IdleState : State
     {
         base.Enter();
 
-        setRandomFlipTime();
+        entity.SetVelocity(0f);
+        isIdleTimeOver = false;
+        SetRandomIdleTime();
+
+        Debug.Log("Enter \"Idle State\"");
     }
 
     public override void Exit()
     {
         base.Exit();
+
+        if (flipAfterIdle)
+        {
+            entity.Flip();
+        }
     }
 
     public override void LogicUpdate()
     {
         base.LogicUpdate();
 
-        if (Time.time > startTime + flipTime)
+        if (Time.time > startTime + idleTime)
         {
-            entity.Flip();
+            isIdleTimeOver = true;
         }
     }
 
@@ -40,8 +53,14 @@ public class IdleState : State
         base.PhysicUpdate();
     }
 
-    private void setRandomFlipTime()
+    public void SetFlipAfterIdle(bool flip)
     {
-        flipTime = Random.Range(stateData.minFlipTime, stateData.maxFlipTime);
+        flipAfterIdle = flip;
     }
+
+    private void SetRandomIdleTime()
+    {
+        idleTime = Random.Range(stateData.minIdleTime, stateData.maxIdleTime);
+    }
+
 }

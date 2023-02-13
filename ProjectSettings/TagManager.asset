@@ -48,6 +48,9 @@ TagManager:
   - name: platforms
     uniqueID: 4102703069
     locked: 0
+  - name: monster
+    uniqueID: 3427214297
+    locked: 0
   - name: player
     uniqueID: 3041705605
     locked: 0

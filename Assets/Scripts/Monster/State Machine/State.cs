@@ -9,20 +9,24 @@ public class State
 
     protected float startTime; // time when this state is entered
 
-    public State(Entity entity, FiniteStateMachine finiteStateMachine)
+    protected string animBoolName;
+
+    public State(Entity entity, FiniteStateMachine finiteStateMachine, string animBoolName)
     {
         this.entity = entity;
         this.finiteStateMachine = finiteStateMachine;
+        this.animBoolName = animBoolName;
     }
 
     public virtual void Enter() 
     {
         startTime = Time.time;
+        entity.anim.SetBool(animBoolName, true);
     }
 
     public virtual void Exit()
     {
-        
+        entity.anim.SetBool(animBoolName, false);
     }
 
     public virtual void LogicUpdate()

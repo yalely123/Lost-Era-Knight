@@ -4,13 +4,25 @@ using UnityEngine;
 
 public class MoveState : State
 {
-    public MoveState(Entity entity, FiniteStateMachine finiteStateMachine) : base (entity, finiteStateMachine)
-    {
+    protected D_MoveState stateData;
 
+    protected bool isDetectingWall;
+    protected bool isDetectingLedge;
+
+    public MoveState(Entity entity, FiniteStateMachine finiteStateMachine, string animBoolName, D_MoveState stateData) 
+        : base (entity, finiteStateMachine, animBoolName)
+    {
+        this.stateData = stateData;
     }
     public override void Enter()
     {
         base.Enter();
+        entity.SetVelocity(stateData.movementSpeed);
+
+        isDetectingWall = entity.CheckWall();
+        isDetectingLedge = entity.CheckLedge();
+
+        Debug.Log("Enter Move State");
     }
 
     public override void Exit()
@@ -26,5 +38,8 @@ public class MoveState : State
     public override void PhysicUpdate()
     {
         base.PhysicUpdate();
+
+        isDetectingWall = entity.CheckWall();
+        isDetectingLedge = entity.CheckLedge();
     }
 }
