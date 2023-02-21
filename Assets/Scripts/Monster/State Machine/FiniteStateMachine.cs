@@ -7,7 +7,7 @@ public class FiniteStateMachine
     // this class simulate machine that read and change state for each instance of monster's behavior
     public State currentState { get; private set; }
     
-    public void InitializeState(State startingState) // start the very first state(  start---->)
+    public void InitializeState(State startingState) // start the very first state(  start----> someState ----> ... )
     {
         this.currentState = startingState;
         currentState.Enter();
@@ -15,8 +15,8 @@ public class FiniteStateMachine
 
     public void ChangeState(State nextState)
     {
-        currentState.Exit();
+        currentState.Exit(); // exit current state
         currentState = nextState;
-        currentState.Enter();
+        currentState.Enter(); // enter next state
     }
 }

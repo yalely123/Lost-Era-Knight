@@ -2,26 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveState : State
+public class ChasePlayerState : State
 {
-    protected D_MoveState stateData;
-    protected bool isDetectingWall;
-    protected bool isDetectingLedge;
+    protected D_ChasePlayerState stateData;
     protected bool isPlayerInAlertRange;
-
-    public MoveState(Entity entity, FiniteStateMachine finiteStateMachine, string animBoolName, D_MoveState stateData) 
-        : base (entity, finiteStateMachine, animBoolName)
+    protected bool isPlayerInAttackRange;
+    public ChasePlayerState(Entity entity, FiniteStateMachine finiteStateMachine, string animBoolName, D_ChasePlayerState stateData) : base(entity, finiteStateMachine, animBoolName)
     {
         this.stateData = stateData;
     }
+
     public override void Enter()
     {
         base.Enter();
-        //entity.SetVelocity(stateData.movementSpeed);
-
-        isDetectingWall = entity.CheckWall();
-        isDetectingLedge = entity.CheckLedge();
         isPlayerInAlertRange = entity.CheckPlayeInAlertRange();
+        isPlayerInAttackRange = entity.CheckPlayerInAttackRange();
     }
 
     public override void Exit()
@@ -37,9 +32,7 @@ public class MoveState : State
     public override void PhysicUpdate()
     {
         base.PhysicUpdate();
-
-        isDetectingWall = entity.CheckWall();
-        isDetectingLedge = entity.CheckLedge();
         isPlayerInAlertRange = entity.CheckPlayeInAlertRange();
+        isPlayerInAttackRange = entity.CheckPlayerInAttackRange();
     }
 }

@@ -10,6 +10,7 @@ public class IdleState : State
     protected bool flipAfterIdle;
     protected float idleTime;
     protected bool isIdleTimeOver;
+    protected bool isPlayerInAlertRange;
 
     public IdleState(Entity entity, FiniteStateMachine finiteStateMachine, string animBoolName, D_IdleState stateData)
         : base(entity, finiteStateMachine, animBoolName)
@@ -24,8 +25,8 @@ public class IdleState : State
         entity.SetVelocity(0f);
         isIdleTimeOver = false;
         SetRandomIdleTime();
+        isPlayerInAlertRange = entity.CheckPlayeInAlertRange();
 
-        Debug.Log("Enter \"Idle State\"");
     }
 
     public override void Exit()
@@ -51,6 +52,7 @@ public class IdleState : State
     public override void PhysicUpdate()
     {
         base.PhysicUpdate();
+        isPlayerInAlertRange = entity.CheckPlayeInAlertRange();
     }
 
     public void SetFlipAfterIdle(bool flip)

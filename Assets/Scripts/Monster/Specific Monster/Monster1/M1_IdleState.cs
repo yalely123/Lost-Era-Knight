@@ -30,6 +30,10 @@ public class M1_IdleState : IdleState
         {
             finiteStateMachine.ChangeState(monster.moveState);
         }
+        else if (isPlayerInAlertRange)
+        {
+            finiteStateMachine.ChangeState(monster.playerDetectedState);
+        }
     }
 
     public override void PhysicUpdate()

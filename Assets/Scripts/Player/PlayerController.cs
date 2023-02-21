@@ -179,9 +179,6 @@ public class PlayerController : MonoBehaviour
             isWallSliding = false;
             Vector2 calculatedWallJumpForceToAdd = new Vector2(wallJumpDirection.x * wallJumpForce * -facingDirection, 
                                     wallJumpDirection.y * wallJumpForce);
-            //Debug.Log("caled force = " + calculatedWallJumpForceToAdd);
-            //Debug.Log("wall jump direction = " + wallJumpDirection);
-            //Debug.Log("wall jump force = " + wallJumpForce);
             rb.AddForce(calculatedWallJumpForceToAdd, ForceMode2D.Impulse);
         }
 
