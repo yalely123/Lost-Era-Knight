@@ -2,17 +2,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackState : MonoBehaviour
+public class AttackState : State
 {
-    // Start is called before the first frame update
-    void Start()
+    protected Transform attackPosition;
+    protected bool isAnimationFinished;
+    protected bool isTrigger;
+    public AttackState(Entity entity, FiniteStateMachine finiteStateMachine, string animBoolName, Transform attackPosition) 
+        : base(entity, finiteStateMachine, animBoolName)
     {
-        
+        this.attackPosition = attackPosition;
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Enter()
     {
-        
+        base.Enter();
+        isAnimationFinished = false;
+        isTrigger = false;
+        entity.atsm.attackState = this;
+        entity.SetVelocity(0f);
+    }
+
+    public override void Exit()
+    {
+        base.Exit();
+    }
+
+    public override void LogicUpdate()
+    {
+        base.LogicUpdate();
+    }
+
+    public override void PhysicUpdate()
+    {
+        base.PhysicUpdate();
+    }
+
+    public virtual void TriggerAttack()
+    {
+        isTrigger = true;
+    }
+
+    public virtual void FinishAttack()
+    {
+        isAnimationFinished = true;
+        isTrigger = false;
     }
 }

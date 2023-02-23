@@ -12,7 +12,9 @@ public class Entity : MonoBehaviour
     private Vector2 velocityWorkSpace; // use when new vector 2 to set velocity
     public Rigidbody2D rb { get; private set; }
     public Animator anim { get; private set; }
-    private GameObject aliveGO;
+    public GameObject aliveGO;
+
+    public AnimationToStatemachine atsm;
 
     [SerializeField]
     private Transform wallCheck;
@@ -27,7 +29,11 @@ public class Entity : MonoBehaviour
         aliveGO = transform.Find("Alive").gameObject;
         rb = aliveGO.GetComponent<Rigidbody2D>();
         anim = aliveGO.GetComponent<Animator>();
+        atsm = aliveGO.GetComponent<AnimationToStatemachine>();
+
         stateMachine = new FiniteStateMachine();
+
+        
     }
 
     public virtual void Update()

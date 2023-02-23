@@ -7,6 +7,7 @@ public class PlayerDetectedState : State
     protected D_PlayerDetectedState stateData;
     protected bool isPlayerInAlertRange;
     protected bool isPlayerInAttackRange;
+    protected bool canPerformAction;
 
     public PlayerDetectedState(Entity entity, FiniteStateMachine finiteStateMachine, string animBoolName, D_PlayerDetectedState stateData) 
         : base(entity, finiteStateMachine, animBoolName)
@@ -21,6 +22,7 @@ public class PlayerDetectedState : State
         entity.SetVelocity(0f); // to make monster stop moving when enter playerDetected state
         isPlayerInAlertRange = entity.CheckPlayeInAlertRange();
         isPlayerInAttackRange = entity.CheckPlayerInAttackRange();
+        canPerformAction = false;
     }
 
     public override void Exit()
@@ -31,6 +33,10 @@ public class PlayerDetectedState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        if (Time.time > startTime + stateData.actionTime)
+        {
+            canPerformAction = true;
+        }
        
     }
 

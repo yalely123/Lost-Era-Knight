@@ -9,7 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b1f2752fd2425a94fa91b4f9df3729f7, type: 3}
-  m_Name: newChasePlayerStateData
+  m_Script: {fileID: 11500000, guid: 45e011dbef2cba949b1ca88ec6663115, type: 3}
+  m_Name: M1_MeleeAttackData
   m_EditorClassIdentifier: 
-  movementSpeed: 10
+  attackRadius: 0.8
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  attackDamage: 10
+  performDuration: 0.3
+  waitBeforeperformDuration: 0.5

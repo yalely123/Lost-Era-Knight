@@ -32,11 +32,10 @@ public class M1_PlayerDetectedState : PlayerDetectedState
         }
         else if (isPlayerInAttackRange)
         {
-            // TODO: change to attack state
+            finiteStateMachine.ChangeState(monster.chooseAttackStyleState);
         }
         else if (!isPlayerInAttackRange)
         {
-            // TODO: change to chase player state
             finiteStateMachine.ChangeState(monster.chasePlayerState);
         }
     }

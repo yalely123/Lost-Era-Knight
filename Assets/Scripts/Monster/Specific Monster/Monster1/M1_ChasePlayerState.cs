@@ -14,7 +14,7 @@ public class M1_ChasePlayerState : ChasePlayerState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Now in M1 chase player state");
+        
     }
 
     public override void Exit()
@@ -32,13 +32,13 @@ public class M1_ChasePlayerState : ChasePlayerState
         if (isPlayerInAlertRange && !isPlayerInAttackRange)
         {
             // Do move toward player.
-            entity.SetVelocity(stateData.movementSpeed);
+            entity.SetVelocity(stateData.chaseSpeed);
         }
         else if (isPlayerInAttackRange)
         {
             // Do change to attack state
-            Debug.Log("Attack!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             entity.SetVelocity(0f);
+            finiteStateMachine.ChangeState(monster.chooseAttackStyleState);
         }
         else if (!isPlayerInAlertRange)
         {

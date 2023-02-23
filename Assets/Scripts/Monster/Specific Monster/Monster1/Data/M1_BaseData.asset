@@ -15,7 +15,7 @@ MonoBehaviour:
   wallCheckDistance: 1
   ledgeCheckDistance: 1.1
   alertRange: 10
-  attackRange: 1
+  attackRange: 0.65
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
