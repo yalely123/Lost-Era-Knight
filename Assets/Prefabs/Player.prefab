@@ -315,7 +315,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1253261691
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: b0a88210a96337a469296f9f14e8d5f4, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -344,7 +344,7 @@ GameObject:
   - component: {fileID: 3965803733216929750}
   - component: {fileID: 3965803733216929751}
   - component: {fileID: 3965803733216929747}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -408,7 +408,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1253261691
-  m_SortingLayer: 3
+  m_SortingLayer: 4
   m_SortingOrder: 1
   m_Sprite: {fileID: -2311659948842064771, guid: 8330aadb3c8e009438d989ccdee5db68, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -423,7 +423,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &3965803733216929756
 Animator:
-  serializedVersion: 3
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -436,10 +436,11 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!61 &3965803733216929744
 BoxCollider2D:
   m_ObjectHideFlags: 0
