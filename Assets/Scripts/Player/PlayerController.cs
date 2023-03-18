@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public int playerHealth = 100;
-
     public int facingDirection = 1; // 1 is facing to the right and -1 is facing to the left
     public int movementForceInAir;
     public float movementSpeed = 10f;
@@ -23,6 +21,7 @@ public class PlayerController : MonoBehaviour
     public bool canJump;
     public bool isTouchingWall;
     public bool isWallSliding;
+
 
     public float groundCheckRadius;
     public float wallCheckDistance;
@@ -46,27 +45,26 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        checkInput();
-        checkMovementDirection();
+        CheckInput();
+        CheckMovementDirection();
         updateAnimation();
-        checkIfCanJump();
-        checkIfWallSliding();
+        CheckIfCanJump();
+        CheckIfWallSliding();
 
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
             transform.SetPositionAndRotation(new Vector2(-2, 3), transform.rotation);
             rb.velocity = new Vector2(0f, -1.0f);
         }
-
     }
 
     private void FixedUpdate()
     {
         ApplyMovement();
-        checkSurroundings();
+        CheckSurroundings();
     }
 
-    private void checkInput()
+    private void CheckInput()
     {
         movementInputDirection = Input.GetAxisRaw("Horizontal");
 
@@ -75,16 +73,15 @@ public class PlayerController : MonoBehaviour
             Jump();
         }
         
-        if (Input.GetKeyUp(KeyCode.Z))
+        if (Input.GetKeyUp(KeyCode.Z) && rb.velocity.y > 0) // velocity.y > 0 mean that not in falling phase
         {
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * jumpHeightMultiplier);
         }
 
-
     }
     private void ApplyMovement()
     {
-        if (isGrounded) // add this condition to fix walljump x axis cant add force
+        if (isGrounded && !isWallSliding) // add this condition to fix walljump x axis cant add force
         {
             rb.velocity = new Vector2(movementInputDirection * movementSpeed, rb.velocity.y);
         }
@@ -108,7 +105,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void checkIfCanJump()
+    private void CheckIfCanJump()
     {
         if (!isGrounded && jumpAmount == jumpAmountLeft) // this mean falling without jump such as slip of platform
         {
@@ -131,7 +128,7 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    private void checkIfWallSliding()
+    private void CheckIfWallSliding()
     {
         if (isTouchingWall && !isGrounded && rb.velocity.y < 0)
         {
@@ -144,7 +141,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void checkMovementDirection()
+    private void CheckMovementDirection()
     {
         if (!isFacingRight && movementInputDirection > 0)
         {
@@ -162,13 +159,16 @@ public class PlayerController : MonoBehaviour
         {
             isWalking = false;
         }
+        
     }
 
-    private void checkSurroundings()
+    private void CheckSurroundings()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
         isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
     }
+
+
     private void Jump()
     {
         if (canJump && !isWallSliding) // proper jump (jump from the ground)
@@ -183,8 +183,6 @@ public class PlayerController : MonoBehaviour
         }
 
     }
-
-
 
     private void FlipDirection()
     {

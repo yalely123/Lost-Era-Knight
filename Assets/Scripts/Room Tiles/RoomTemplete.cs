@@ -20,32 +20,6 @@ public class RoomTemplete : MonoBehaviour
         ChooseStartRoomTile(9);
     }
 
-    private void Update()
-    {
-        // this is for debugging
-        if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            // mean that player pass top door
-            ChangeRoomTile();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha6))
-        {
-            // mean that player pass right door
-            ChangeRoomTile();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            // mean that player pass bottom door
-            ChangeRoomTile();
-        }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            // mean that player pass left door
-            ChangeRoomTile();
-        }
-        
-    }
-
     public void ChooseStartRoomTile()
     {
         // Randomly generate first room tile.
@@ -115,7 +89,6 @@ public class RoomTemplete : MonoBehaviour
         //Debug.Log(currentTile.name);
         currentTile.SetActive(true);
         
-        // TODO: bring player to opposite side
     }
 
     // TODO: choose what next room when player arrive next room

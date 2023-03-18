@@ -36,10 +36,10 @@ public class Monster1 : Entity
 
         moveState = new M1_MoveState(this, stateMachine, "move", moveStateData, this);
         idleState = new M1_IdleState(this, stateMachine, "idle", idleStateData, this);
-        playerDetectedState = new M1_PlayerDetectedState(this, stateMachine, "", playerDetectedStateData, this);
-        chasePlayerState = new M1_ChasePlayerState(this, stateMachine, "", chasePlayerStateData, this);
-        chooseAttackStyleState = new M1_ChooseAttackStyleState(this, stateMachine, "", chooseAttackStyleStateData, this);
-        meleeAttackState = new M1_MeleeAttackState(this, stateMachine, "", meleeAttackPosition, meleeAttackStateData, this);
+        playerDetectedState = new M1_PlayerDetectedState(this, stateMachine, "playerDetected", playerDetectedStateData, this);
+        chasePlayerState = new M1_ChasePlayerState(this, stateMachine, "chasePlayer", chasePlayerStateData, this);
+        chooseAttackStyleState = new M1_ChooseAttackStyleState(this, stateMachine, "chooseAttackStyle", chooseAttackStyleStateData, this);
+        meleeAttackState = new M1_MeleeAttackState(this, stateMachine, "meleeAttack", meleeAttackPosition, meleeAttackStateData, this);
 
         stateMachine.InitializeState(moveState);
     }

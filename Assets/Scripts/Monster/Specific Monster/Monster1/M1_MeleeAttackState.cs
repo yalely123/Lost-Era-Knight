@@ -51,6 +51,6 @@ public class M1_MeleeAttackState : MeleeAttackState
     public override void TriggerAttack()
     {
         base.TriggerAttack();
-        isTrigger = true;
+        // isTrigger = true;
     }
 }

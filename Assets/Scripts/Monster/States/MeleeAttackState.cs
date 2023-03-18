@@ -7,6 +7,8 @@ public class MeleeAttackState : AttackState
     protected D_MeleeAttackState stateData;
     protected AttackDetail attackDetails;
     protected bool isPlayerInAlertRange;
+    protected Collider2D playerCollision;
+    protected bool isAttackHitPlayer;
     public MeleeAttackState(Entity entity, FiniteStateMachine finiteStateMachine, string animBoolName, Transform attackPosition, D_MeleeAttackState stateData) 
         : base(entity, finiteStateMachine, animBoolName, attackPosition)
     {
@@ -30,6 +32,7 @@ public class MeleeAttackState : AttackState
     public override void FinishAttack()
     {
         base.FinishAttack();
+        isAttackHitPlayer = false;
     }
 
     public override void LogicUpdate()
@@ -53,10 +56,11 @@ public class MeleeAttackState : AttackState
 
         foreach (Collider2D coll in detectedObjects) // for each colliders that overlap the circle
         {
-            // coll.transform.SendMessage("Damage", attackDetails);
+            //coll.transform.SendMessage("Damage", attackDetails);
             if (coll.CompareTag("Player")) {
-                // TODO: send damage to player help and nock player back
+                // TODO: send damage to player help and knock player back
                 Debug.Log("Melee hit player");
+                coll.GetComponent<PlayerHealth>().ReceiveDamage(stateData.attackDamage);
             }
         }
     }
