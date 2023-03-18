@@ -35,7 +35,7 @@ public class MonsterHealth : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log("A monster is removed!");
+        // Debug.Log("A monster is removed!");
         Destroy(gameObject);
         GameAi.monsterKillCount += 1;
         GameAi.LogMonsterKillCount();

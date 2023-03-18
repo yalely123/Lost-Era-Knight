@@ -72,6 +72,16 @@ public class Entity : MonoBehaviour
         return Physics2D.Raycast(playerCheck.position, aliveGO.transform.right, entityData.attackRange, entityData.whatIsPlayer);
     }
 
+    public virtual bool CheckPlayerInAlertCircleRange()
+    {
+        Collider2D[] collisionInCircleArea = Physics2D.OverlapCircleAll(transform.position, entityData.alertRange);
+        foreach(Collider2D coll in collisionInCircleArea)
+        {
+            if (coll.tag == "Player") { return true; }
+        }
+        return false;
+    }
+
     public virtual void Flip()
     {
         facingDirection *= -1;
@@ -89,4 +99,3 @@ public class Entity : MonoBehaviour
     }
 
 }
-

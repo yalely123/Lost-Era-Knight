@@ -4,20 +4,21 @@ using UnityEngine;
 
 public class PlayerAttack : MonoBehaviour
 {
-    private GameObject attackArea = default;
-    private GameObject attackAreaTop = default;
-    private GameObject attackAreaDown = default;
+    [SerializeField]
     private bool attacking = false;
-    private float timeToAttack = 0.15f;
+    public float timeToAttack = 0.3f;
     private float timer = 0.0f;
     private string side = "default";
+    public float attackRadius = 1.35f;
 
+    private Animator anim;
+    public Transform attackArea;
     // Start is called before the first frame update
     void Start()
     {
-        attackArea = transform.GetChild(0).gameObject;
-        attackAreaTop = transform.GetChild(1).gameObject;
-        attackAreaDown = transform.GetChild(2).gameObject;
+        // attackArea = GameObject.Find("Attack Area").transform;
+        anim = GetComponent<Animator>();
+        
     }
 
     // Update is called once per frame
@@ -49,9 +50,7 @@ public class PlayerAttack : MonoBehaviour
             {
                 timer = 0;
                 attacking = false;
-                attackArea.SetActive(attacking);
-                attackAreaTop.SetActive(attacking);
-                attackAreaDown.SetActive(attacking);
+                anim.SetBool("isAttacking", attacking);
             }
         }
     }
@@ -61,13 +60,29 @@ public class PlayerAttack : MonoBehaviour
         attacking = true;
         if (side == "default")
         {
-            attackArea.SetActive(attacking); // this line is for anable child object
-        }else if (side == "top")
-        {
-            attackAreaTop.SetActive(attacking);
-        }else if (side == "down")
-        {
-            attackAreaDown.SetActive(attacking);
+            // attackArea.SetActive(attacking); // this line is for anable child object
+            anim.SetBool("isAttacking", attacking);
+            Collider2D[] attackCollision = Physics2D.OverlapCircleAll(attackArea.transform.position, attackRadius);
+            foreach (Collider2D coll in attackCollision)
+            {
+                if (coll.tag == "Monster")
+                {
+                    Debug.Log("Player hit monster");
+                }
+            }
         }
     }
+
+    private void setOffIsAttacking()
+    {
+        attacking = false;
+        anim.SetBool("isAttacking", false);
+    }
+
+    
+    public void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(attackArea.transform.position, attackRadius);
+    }
+    
 }

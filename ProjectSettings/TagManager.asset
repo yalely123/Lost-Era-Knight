@@ -18,9 +18,9 @@ TagManager:
   - Ground
   - DamageAble
   - Dead
-  - 
+  - FlyMonster
   - Player
-  - 
+  - AttackEffect
   - 
   - 
   - 
@@ -54,4 +54,7 @@ TagManager:
     locked: 0
   - name: player
     uniqueID: 3041705605
+    locked: 0
+  - name: attackEffect
+    uniqueID: 3005108351
     locked: 0
