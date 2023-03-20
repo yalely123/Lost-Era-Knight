@@ -29,6 +29,7 @@ public class ChooseAttackStyleState : State
     public override void LogicUpdate()
     {
         base.LogicUpdate();
+        // TODO: make bee chase toward player
     }
 
     public override void PhysicUpdate()

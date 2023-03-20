@@ -25,18 +25,21 @@ public class M1_PlayerDetectedState : PlayerDetectedState
     {
         base.LogicUpdate();
         // if player not in alert range change to idle state
-        if (!isPlayerInAlertRange)
+        if (canPerformAction)
         {
-            monster.idleState.SetFlipAfterIdle(false);
-            finiteStateMachine.ChangeState(monster.idleState);
-        }
-        else if (isPlayerInAttackRange)
-        {
-            finiteStateMachine.ChangeState(monster.chooseAttackStyleState);
-        }
-        else if (!isPlayerInAttackRange)
-        {
-            finiteStateMachine.ChangeState(monster.chasePlayerState);
+            if (!isPlayerInAlertRange)
+            {
+                monster.idleState.SetFlipAfterIdle(false);
+                finiteStateMachine.ChangeState(monster.idleState);
+            }
+            else if (isPlayerInAttackRange)
+            {
+                finiteStateMachine.ChangeState(monster.chooseAttackStyleState);
+            }
+            else if (!isPlayerInAttackRange)
+            {
+                finiteStateMachine.ChangeState(monster.chasePlayerState);
+            }
         }
     }
 

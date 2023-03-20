@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8432563400431146b691abce7baa954, type: 3}
+  m_Name: M2_ShootProjectileData
+  m_EditorClassIdentifier: 
+  performDuration: 0.2
+  waitBeforeDuration: 0.3
+  attackDamage: 10
+  bullet: {fileID: 4820027736304108742, guid: 6eef3191918359b418a8e1ee410e3856, type: 3}
+  whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 4096
+  bulletSpeed: 10
+  bulletLifeTime: 10

@@ -13,6 +13,7 @@ public class D_Entity : ScriptableObject
     public float alertRange = 4f;
 
     public float attackRange = 1f;
+    public float chasingRange = 7f;
 
     public LayerMask whatIsGround;
     public LayerMask whatIsPlayer;

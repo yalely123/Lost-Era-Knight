@@ -46,4 +46,9 @@ public class PlayerDetectedState : State
         isPlayerInAlertRange = entity.CheckPlayeInAlertRange();
         isPlayerInAttackRange = entity.CheckPlayerInAttackRange();
     }
+
+    public void setCanPerformAction(bool genie) // for hornor of my friend I set variable name to his name Genie
+    {
+        canPerformAction = genie;
+    }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class M1_MeleeAttackState : MeleeAttackState
 {
     private Monster1 monster;
-   
+
     public M1_MeleeAttackState(Entity entity, FiniteStateMachine finiteStateMachine, string animBoolName, Transform attackPosition, D_MeleeAttackState stateData, Monster1 monster) 
         : base(entity, finiteStateMachine, animBoolName, attackPosition, stateData)
     {
@@ -40,6 +40,7 @@ public class M1_MeleeAttackState : MeleeAttackState
         else if (Time.time > startTime + stateData.performDuration && isTrigger)
         {
             FinishAttack();
+            monster.playerDetectedState.setCanPerformAction(false);
         }
     }
 

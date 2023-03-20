@@ -41,5 +41,6 @@ public class MoveState : State
         isDetectingWall = entity.CheckWall();
         isDetectingLedge = entity.CheckLedge();
         isPlayerInAlertRange = entity.CheckPlayeInAlertRange();
+        
     }
 }

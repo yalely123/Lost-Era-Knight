@@ -21,7 +21,9 @@ public class Entity : MonoBehaviour
     [SerializeField]
     private Transform ledgeCheck;
     [SerializeField]
-    private Transform playerCheck;
+    public Transform playerCheck;
+
+    public bool isAlert;
 
     public virtual void Start()
     {
@@ -32,6 +34,7 @@ public class Entity : MonoBehaviour
         atsm = aliveGO.GetComponent<AnimationToStatemachine>();
 
         stateMachine = new FiniteStateMachine();
+        isAlert = false;
 
         
     }
@@ -74,12 +77,56 @@ public class Entity : MonoBehaviour
 
     public virtual bool CheckPlayerInAlertCircleRange()
     {
-        Collider2D[] collisionInCircleArea = Physics2D.OverlapCircleAll(transform.position, entityData.alertRange);
-        foreach(Collider2D coll in collisionInCircleArea)
+        Collider2D[] alertCollisionInCircleArea = Physics2D.OverlapCircleAll(aliveGO.transform.position, entityData.alertRange);
+        foreach(Collider2D coll in alertCollisionInCircleArea)
         {
             if (coll.tag == "Player") { return true; }
         }
         return false;
+    }
+
+    public virtual bool CheckPlayerInAttackCircleRange()
+    {
+        Collider2D[] attackCollisionInCircleArea = Physics2D.OverlapCircleAll(aliveGO.transform.position, entityData.attackRange);
+        foreach (Collider2D coll in attackCollisionInCircleArea)
+        {
+            if (coll.tag == "Player") { return true; }
+        }
+        return false;
+    }
+
+    public virtual bool CheckPlayerInChasingCircleRange()
+    {
+        Collider2D[] chasingCollisionInCircleArea = Physics2D.OverlapCircleAll(aliveGO.transform.position, entityData.chasingRange);
+        foreach (Collider2D coll in chasingCollisionInCircleArea)
+        {
+            if (coll.tag == "Player") { return true; }
+        }
+        return false;
+    }
+
+    public virtual bool CheckIfNeedToFlip()
+    {
+        if (playerCheck.position.x > aliveGO.transform.position.x && facingDirection != 1 && isAlert)
+        {
+            return true;
+        }
+        else if (playerCheck.position.x < aliveGO.transform.position.x && facingDirection != -1 && isAlert)
+        {
+            return true;
+        }
+        else
+        {
+            return  false;
+        }
+    }
+
+    
+    public virtual Vector2 CheckPlayerAngle()
+    {
+        Vector2 angle = new Vector2(playerCheck.position.x - aliveGO.transform.position.x,
+            playerCheck.position.y - aliveGO.transform.position.y);   
+        return angle;
     }
 
     public virtual void Flip()

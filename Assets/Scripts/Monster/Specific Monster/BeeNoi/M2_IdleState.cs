@@ -5,7 +5,7 @@ using UnityEngine;
 public class M2_IdleState : IdleState
 {
     private Monster2 monster;
-    private bool isPlayerInAlartRange;
+    private bool isPlayerInAlertCircleRange;
     public M2_IdleState(Entity entity, FiniteStateMachine finiteStateMachine, string animBoolName, D_IdleState stateData, Monster2 monster) : base(entity, finiteStateMachine, animBoolName, stateData)
     {
         this.monster = monster;
@@ -15,6 +15,8 @@ public class M2_IdleState : IdleState
     {
         base.Enter();
         Debug.Log("Bee: Enter Idle State");
+        monster.isAlert = false;
+        isPlayerInAlertCircleRange = entity.CheckPlayerInAlertCircleRange();
     }
 
     public override void Exit()
@@ -29,15 +31,16 @@ public class M2_IdleState : IdleState
         {
             finiteStateMachine.ChangeState(monster.moveState);
         }
-        if (isPlayerInAlartRange)
+        if (isPlayerInAlertCircleRange)
         {
             // TODO: change to player Detected State
+            finiteStateMachine.ChangeState(monster.playerDetectedState);
         }
     }
 
     public override void PhysicUpdate()
     {
         base.PhysicUpdate();
-        isPlayerInAlartRange = entity.CheckPlayerInAlertCircleRange();
+        isPlayerInAlertCircleRange = entity.CheckPlayerInAlertCircleRange();
     }
 }
