@@ -18,7 +18,7 @@ public class M2_MoveState : MoveState
         base.Enter();
         monster.isAlert = false;
         isPlayerInAlertCircleRange = entity.CheckPlayerInAlertCircleRange();
-        Debug.Log("Bee: Enter MoveState");
+        //Debug.Log("Bee: Enter MoveState");
         entity.SetVelocity(stateData.movementSpeed);
     }
 

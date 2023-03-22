@@ -21,7 +21,7 @@ public class M2_ChasePlayerState : ChasePlayerState
     {
         base.Enter();
         isNeedToFlip = entity.CheckIfNeedToFlip();
-        Debug.Log("Bee: Enter ChasePlayerState");
+        //Debug.Log("Bee: Enter ChasePlayerState");
         attackPositionDistance = Vector2.Distance(monster.aliveGO.transform.position, entity.playerCheck.position);
     }
 

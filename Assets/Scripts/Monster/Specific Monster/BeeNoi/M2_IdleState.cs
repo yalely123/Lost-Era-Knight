@@ -14,7 +14,7 @@ public class M2_IdleState : IdleState
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Bee: Enter Idle State");
+        //Debug.Log("Bee: Enter Idle State");
         monster.isAlert = false;
         isPlayerInAlertCircleRange = entity.CheckPlayerInAlertCircleRange();
     }

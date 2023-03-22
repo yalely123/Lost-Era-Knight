@@ -16,7 +16,7 @@ public class M2_ChooseAttackStyleState : ChooseAttackStyleState
     {
         base.Enter();
         attackStyle = randomAttackStyle();
-        Debug.Log("Bee: Enter ChooseAttackStyleState----------------------------");
+        //Debug.Log("Bee: Enter ChooseAttackStyleState----------------------------");
         entity.SetVelocity(0f);
     }
 

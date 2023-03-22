@@ -14,12 +14,14 @@ public class PlayerHealth : MonoBehaviour
 
     private Rigidbody2D rb;
     private PlayerController controller;
+    private SpriteRenderer playerSprite;
     
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         health = maxHealth;
         controller = gameObject.GetComponent<PlayerController>();
+        playerSprite = gameObject.GetComponent<SpriteRenderer>();
     }
     void Update()
     {
@@ -68,8 +70,17 @@ public class PlayerHealth : MonoBehaviour
         if (health > 0)
         {
             // call funciton in playercontroller to make player knockback
+            StartCoroutine(VisualIndicator(Color.grey));
 
         }
+    }
+
+    private IEnumerator VisualIndicator(Color color, float duration = 0.3f)
+    {
+        playerSprite.color = color;
+        yield return new WaitForSeconds(duration);
+        playerSprite.color = Color.white;
+
     }
 
 }

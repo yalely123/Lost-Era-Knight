@@ -15,7 +15,7 @@ public class M2_ShootStingState : ShootProjectileState
     {
         base.Enter();
         // do Shoot sting
-        Debug.Log("Bee: Enter Shoot sting state");
+       // Debug.Log("Bee: Enter Shoot sting state");
     }
 
     public override void Exit()

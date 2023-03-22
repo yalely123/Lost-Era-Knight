@@ -127,6 +127,7 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
+  playerPosition: {fileID: 0}
 --- !u!1 &4820027736982202374
 GameObject:
   m_ObjectHideFlags: 0

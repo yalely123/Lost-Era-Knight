@@ -24,6 +24,14 @@ public class Entity : MonoBehaviour
     public Transform playerCheck;
 
     public bool isAlert;
+    [SerializeField]
+    private float currentHealth;
+    [SerializeField]
+    private Material flashMaterial;
+    [SerializeField]
+    private Material defaultMaterial;
+    private float flashDuration = 0.15f;
+    private Coroutine flashRoutine;
 
     public virtual void Start()
     {
@@ -36,16 +44,19 @@ public class Entity : MonoBehaviour
         stateMachine = new FiniteStateMachine();
         isAlert = false;
 
-        
+        currentHealth = entityData.maxHealth;
+
     }
 
     public virtual void Update()
     {
         stateMachine.currentState.LogicUpdate();
+        
     }
 
     public virtual void FixedUpdate()
     {
+        CheckIfMonsterDead();
         stateMachine.currentState.PhysicUpdate();
     }
 
@@ -67,12 +78,17 @@ public class Entity : MonoBehaviour
 
     public virtual bool CheckPlayeInAlertRange()
     {
-        return Physics2D.Raycast(playerCheck.position, aliveGO.transform.right, entityData.alertRange, entityData.whatIsPlayer);
+        if (playerCheck != null)
+            return Physics2D.Raycast(playerCheck.position, aliveGO.transform.right, entityData.alertRange, entityData.whatIsPlayer);
+        else
+            return false;
     }
 
     public virtual bool CheckPlayerInAttackRange()
     {
-        return Physics2D.Raycast(playerCheck.position, aliveGO.transform.right, entityData.attackRange, entityData.whatIsPlayer);
+        if (playerCheck != null)
+            return Physics2D.Raycast(playerCheck.position, aliveGO.transform.right, entityData.attackRange, entityData.whatIsPlayer);
+        else return false;
     }
 
     public virtual bool CheckPlayerInAlertCircleRange()
@@ -107,26 +123,43 @@ public class Entity : MonoBehaviour
 
     public virtual bool CheckIfNeedToFlip()
     {
-        if (playerCheck.position.x > aliveGO.transform.position.x && facingDirection != 1 && isAlert)
+        if (playerCheck != null)
         {
-            return true;
+            if (playerCheck.position.x > aliveGO.transform.position.x && facingDirection != 1 && isAlert)
+            {
+                return true;
+            }
+            else if (playerCheck.position.x < aliveGO.transform.position.x && facingDirection != -1 && isAlert)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
-        else if (playerCheck.position.x < aliveGO.transform.position.x && facingDirection != -1 && isAlert)
-        {
-            return true;
-        }
-        else
-        {
-            return  false;
-        }
+        else return false;
     }
 
     
     public virtual Vector2 CheckPlayerAngle()
     {
-        Vector2 angle = new Vector2(playerCheck.position.x - aliveGO.transform.position.x,
-            playerCheck.position.y - aliveGO.transform.position.y);   
-        return angle;
+        if (playerCheck != null)
+        {
+            Vector2 angle = new Vector2(playerCheck.position.x - aliveGO.transform.position.x,
+                playerCheck.position.y - aliveGO.transform.position.y);
+            return angle;
+        }
+        else return Vector2.zero;
+    }
+
+    public virtual bool CheckIfMonsterDead()
+    {
+        if (currentHealth <= 0)
+        {
+            return true;
+        }
+        return false;
     }
 
     public virtual void Flip()
@@ -135,14 +168,47 @@ public class Entity : MonoBehaviour
         aliveGO.transform.Rotate(0f, 180f, 0f);
     }
 
+    public virtual void ReceiveDamage(float amount)
+    {
+        currentHealth -= amount;
+        DamageFlash();
+        Debug.Log("Monster Receive Damage called from entity");
+    }
+
+    public virtual void Die()
+    {
+        Debug.Log("Monster Die");
+        Destroy(gameObject);
+        GameAi.monsterKillCount += 1;
+    }
+
+    public void DamageFlash()
+    {
+        // != null mean that this coroutine is running.
+        // if coroutine still running we have to stop it first
+        if (flashRoutine != null)
+        {
+            StopCoroutine(flashRoutine);
+        }
+
+        flashRoutine = StartCoroutine(DamageFlashRoutine());
+    }
+
+    public IEnumerator DamageFlashRoutine()
+    {
+        aliveGO.GetComponent<SpriteRenderer>().material = flashMaterial;
+        yield return new WaitForSeconds(flashDuration);
+        aliveGO.GetComponent<SpriteRenderer>().material = defaultMaterial;
+        flashRoutine = null;
+    }
+    
+
     public virtual void OnDrawGizmos() // draw line to debugging
     {
         Gizmos.DrawLine(wallCheck.position, 
                         wallCheck.position + (Vector3)(Vector2.right * facingDirection * entityData.wallCheckDistance));
         Gizmos.DrawLine(ledgeCheck.position, 
                         ledgeCheck.position + (Vector3)(Vector2.down * entityData.ledgeCheckDistance));
-        // Gizmos.DrawLine(playerCheck.position, 
-        //                 playerCheck.position + (Vector3)(Vector2.right * facingDirection * entityData.alertRange));
     }
 
 }

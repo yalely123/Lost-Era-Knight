@@ -44,6 +44,7 @@ public class Sting : MonoBehaviour
         if (playerHit)
         {
             // TODO: call playerHealth ReceiveDamage()
+            playerPosition.gameObject.SendMessage("ReceiveDamage", 15);
             Destroy(gameObject);
 
         }

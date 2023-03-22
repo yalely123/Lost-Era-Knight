@@ -10,6 +10,7 @@ public class PlayerAttack : MonoBehaviour
     private float timer = 0.0f;
     private string side = "default";
     public float attackRadius = 1.35f;
+    public float attackDamage = 15f;
 
     private Animator anim;
     public Transform attackArea;
@@ -68,6 +69,7 @@ public class PlayerAttack : MonoBehaviour
                 if (coll.tag == "Monster")
                 {
                     Debug.Log("Player hit monster");
+                    coll.GetComponentInParent<Entity>().SendMessage("ReceiveDamage", attackDamage); ;
                 }
             }
         }

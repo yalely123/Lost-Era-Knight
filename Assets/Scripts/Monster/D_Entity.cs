@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class D_Entity : ScriptableObject
 {
+    public float maxHealth = 100;
     public float wallCheckDistance = 0.3f;
     public float ledgeCheckDistance = 0.4f;
 

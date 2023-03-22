@@ -21,7 +21,7 @@ public class M2_PlayerDetectedState : PlayerDetectedState
         isPlayerInAttackCircleRange = entity.CheckPlayerInAttackCircleRange();
         monster.isAlert = true;
         isNeedToFlip = entity.CheckIfNeedToFlip();
-        Debug.Log("Bee: Enter PlayerDetectedState");
+        //Debug.Log("Bee: Enter PlayerDetectedState");
     }
 
     public override void Exit()
