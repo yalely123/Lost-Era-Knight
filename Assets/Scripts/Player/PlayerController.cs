@@ -21,7 +21,15 @@ public class PlayerController : MonoBehaviour
     public bool canJump;
     public bool isTouchingWall;
     public bool isWallSliding;
+    public bool isHit = false;
 
+    public float knockDuration;
+    private bool isKnocking;
+    private float knockTriggerTime;
+    public float knockFiction;
+    public float knockBackForce;
+    private bool isKnockBackReachLastFrame; // to make sure that animation reach last Frame
+    public float attackXPos;
 
     public float groundCheckRadius;
     public float wallCheckDistance;
@@ -50,6 +58,7 @@ public class PlayerController : MonoBehaviour
         updateAnimation();
         CheckIfCanJump();
         CheckIfWallSliding();
+        CheckIfIsHit();
 
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
@@ -81,26 +90,40 @@ public class PlayerController : MonoBehaviour
     }
     private void ApplyMovement()
     {
-        if (isGrounded && !isWallSliding) // add this condition to fix walljump x axis cant add force
+        if (isKnocking)
         {
-            rb.velocity = new Vector2(movementInputDirection * movementSpeed, rb.velocity.y);
+            if (isGrounded)
+            {
+                rb.AddForce(new Vector2(rb.velocity.x * -Time.deltaTime * knockFiction, 0), ForceMode2D.Impulse);
+            }
+            if (Time.time > knockTriggerTime + knockDuration && isKnockBackReachLastFrame && isGrounded)
+            {
+                isKnocking = false;
+            }
         }
-
-        if (!isGrounded && movementInputDirection != 0)
+        else
         {
-            Vector2 forceToAdd = new Vector2(movementForceInAir * movementInputDirection, 0);
-            rb.AddForce(forceToAdd); // to make when start move in the air. player will move by adding force(increase speed every fram)
-            if (Mathf.Abs(rb.velocity.x) >= movementSpeed) // limit speed when adding force to not over movementSpeed
+            if (isGrounded && !isWallSliding) // add this condition to fix walljump x axis cant add force
             {
                 rb.velocity = new Vector2(movementInputDirection * movementSpeed, rb.velocity.y);
             }
-        }
 
-        if (isWallSliding) // apply wall sliding by limiting falling velocity 
-        {
-            if (rb.velocity.y < -wallSlidingSpeed)
+            if (!isGrounded && movementInputDirection != 0)
             {
-                rb.velocity = new Vector2(rb.velocity.x, -wallSlidingSpeed);
+                Vector2 forceToAdd = new Vector2(movementForceInAir * movementInputDirection, 0);
+                rb.AddForce(forceToAdd); // to make when start move in the air. player will move by adding force(increase speed every fram)
+                if (Mathf.Abs(rb.velocity.x) >= movementSpeed) // limit speed when adding force to not over movementSpeed
+                {
+                    rb.velocity = new Vector2(movementInputDirection * movementSpeed, rb.velocity.y);
+                }
+            }
+
+            if (isWallSliding) // apply wall sliding by limiting falling velocity 
+            {
+                if (rb.velocity.y < -wallSlidingSpeed)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, -wallSlidingSpeed);
+                }
             }
         }
     }
@@ -143,10 +166,10 @@ public class PlayerController : MonoBehaviour
 
     private void CheckMovementDirection()
     {
-        if (!isFacingRight && movementInputDirection > 0)
+        if (!isFacingRight && movementInputDirection > 0 && !isKnocking)
         {
             FlipDirection();
-        }else if (isFacingRight && movementInputDirection < 0)
+        }else if (isFacingRight && movementInputDirection < 0 && !isKnocking)
         {
             FlipDirection();
         }
@@ -162,12 +185,45 @@ public class PlayerController : MonoBehaviour
         
     }
 
+    private void CheckIfIsHit()
+    {
+        if (isHit)
+        {
+            isKnocking = true;
+            // TODO: apply Knocking
+            KnockBack();
+            isHit = false;
+        }
+    }
+
     private void CheckSurroundings()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
         isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
     }
 
+    private void KnockBack()
+    {
+        int attackFrom; // 1 mean get attack from right side and -1 mean get from left side
+        if (transform.position.x > attackXPos)
+        {
+            attackFrom = -1;
+        }
+        else
+        {
+            attackFrom = 1;
+        }
+        Vector2 knockDirection = new Vector2(5 * -attackFrom, 3).normalized;
+        isKnockBackReachLastFrame = false;
+        knockTriggerTime = Time.time;
+        rb.velocity = Vector2.zero;
+        rb.AddForce(knockDirection * knockBackForce, ForceMode2D.Impulse);
+    }
+
+    public void KnockBackLastFrameCheck()
+    {
+        isKnockBackReachLastFrame = true;
+    }
 
     private void Jump()
     {
@@ -197,6 +253,7 @@ public class PlayerController : MonoBehaviour
         anim.SetBool("isGrounded", isGrounded);
         anim.SetFloat("yVelocity", rb.velocity.y);
         anim.SetBool("isWallSliding", isWallSliding);
+        anim.SetBool("isHit", isKnocking);
     }
 
     public void OnDrawGizmos()

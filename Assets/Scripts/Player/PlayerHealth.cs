@@ -11,10 +11,14 @@ public class PlayerHealth : MonoBehaviour
     public float stunTime = 0;
     [SerializeField]
     private bool deadShown = false;
+    [SerializeField]
+    private bool isHitable;
+    private bool isInvincEnd;
 
     private Rigidbody2D rb;
     private PlayerController controller;
     private SpriteRenderer playerSprite;
+    private Coroutine flashRoutine;
     
     void Start()
     {
@@ -22,6 +26,9 @@ public class PlayerHealth : MonoBehaviour
         health = maxHealth;
         controller = gameObject.GetComponent<PlayerController>();
         playerSprite = gameObject.GetComponent<SpriteRenderer>();
+        isHitable = true;
+        flashRoutine = null;
+        isInvincEnd = false;
     }
     void Update()
     {
@@ -32,12 +39,12 @@ public class PlayerHealth : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.H)) // press h to take damage 15 point to test system
         {
-            ReceiveDamage(15);
+            ReceiveDamage(15, transform.position.x);
         }
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
             health = maxHealth;
-            deadShown = false;
+            deadShown = true;
         }
         
     }
@@ -53,11 +60,14 @@ public class PlayerHealth : MonoBehaviour
         GameAi.KillAllMonsters();
         */
         Destroy(gameObject); // Destroy player object (player is dead, shouldn't show on sceen)
-        
     }
 
-    public void ReceiveDamage(float amount) // this funciton is for receive damage and calculate how much to decrease health
+    public void ReceiveDamage(float amount, float xPos) // this funciton is for receive damage and calculate how much to decrease health
     {
+        if (!isHitable)
+        {
+            return;
+        }
 
         if (amount < 0) // Ensure that damage which receive is not negative value.
         {
@@ -65,22 +75,46 @@ public class PlayerHealth : MonoBehaviour
         }else
         {
             health -= amount;
+            controller.isHit = true;
+            controller.attackXPos = xPos;
+            
         }
         
         if (health > 0)
         {
             // call funciton in playercontroller to make player knockback
-            StartCoroutine(VisualIndicator(Color.grey));
-
+            FlashDamage();
         }
     }
 
-    private IEnumerator VisualIndicator(Color color, float duration = 0.3f)
+    private void FlashDamage()
     {
-        playerSprite.color = color;
-        yield return new WaitForSeconds(duration);
-        playerSprite.color = Color.white;
+        if (flashRoutine != null)
+        {
+            StopCoroutine(flashRoutine);
+        }
 
+        flashRoutine = StartCoroutine(VisualIndicator(Color.grey, 1f));
     }
 
+    private IEnumerator VisualIndicator(Color color, float duration = 0.6f)
+    {
+        isHitable = false;
+        for (int i = 0; i < 5; i++)
+        {
+            playerSprite.color = color;
+            yield return new WaitForSeconds(duration / 5);
+            playerSprite.color = Color.white;
+            yield return new WaitForSeconds(duration / 5);
+        }
+        isHitable = true;
+    }
+
+    private IEnumerator Invincible(float duration)
+    {
+        isHitable = false;
+        yield return new WaitForSeconds(duration);
+        isHitable = true;
+
+    }
 }

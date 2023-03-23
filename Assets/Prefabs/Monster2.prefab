@@ -142,12 +142,15 @@ MonoBehaviour:
   playerCheck: {fileID: 0}
   isAlert: 0
   currentHealth: 0
+  flashMaterial: {fileID: 2100000, guid: 284704ba676513643be2b778256e4053, type: 2}
+  defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   idleStateData: {fileID: 11400000, guid: 41b181f7cd3d091459a4050278c41ab6, type: 2}
   moveStateData: {fileID: 11400000, guid: 49716b770cdd80942a3bc930fd86f353, type: 2}
   playerDetectedStateData: {fileID: 11400000, guid: dc0d7d2634af57747a2528ea1bf88070, type: 2}
   chasePlayerStateData: {fileID: 11400000, guid: 4524c1b45282ad8498c827b6d4eb0031, type: 2}
   chooseAttackStyleStateData: {fileID: 11400000, guid: f0c734d017bf90640b4396b5907b1083, type: 2}
   shootProjectileStateData: {fileID: 11400000, guid: 4d5ad950b25c44f46b7af45ac7bce6af, type: 2}
+  coolDownStateData: {fileID: 11400000, guid: 3411cc9f766a7d742ba747526f4317f6, type: 2}
   attackPosition: {fileID: 8033200418330624289}
 --- !u!1 &8033200420461434536
 GameObject:

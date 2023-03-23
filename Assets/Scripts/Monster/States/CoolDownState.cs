@@ -29,8 +29,6 @@ public class CoolDownState : State
         base.LogicUpdate();
         if (Time.time > startTime + stateData.duration)
         {
-            Debug.Log(Time.time);
-            Debug.Log(startTime + stateData.duration);
             isFinishCoolDown = true;
         }
         else

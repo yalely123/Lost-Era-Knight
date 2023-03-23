@@ -60,7 +60,7 @@ public class MeleeAttackState : AttackState
             if (coll.CompareTag("Player")) {
                 // TODO: send damage to player help and knock player back
                 //Debug.Log("Melee hit player");
-                coll.GetComponent<PlayerHealth>().ReceiveDamage(stateData.attackDamage);
+                coll.GetComponent<PlayerHealth>().ReceiveDamage(stateData.attackDamage, entity.aliveGO.transform.position.x);
             }
         }
     }

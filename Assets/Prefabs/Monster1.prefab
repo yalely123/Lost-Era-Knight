@@ -309,6 +309,10 @@ MonoBehaviour:
   wallCheck: {fileID: 8926591790292354963}
   ledgeCheck: {fileID: 8926591790079828410}
   playerCheck: {fileID: 8926591790723663270}
+  isAlert: 0
+  currentHealth: 0
+  flashMaterial: {fileID: 2100000, guid: 284704ba676513643be2b778256e4053, type: 2}
+  defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   idleStateData: {fileID: 11400000, guid: 98ddb4ae675949d4c80e6ed2d78f9f53, type: 2}
   moveStateData: {fileID: 11400000, guid: 17b16e000295b1e448c7664bc5d43376, type: 2}
   playerDetectedStateData: {fileID: 11400000, guid: d4d1d6fa583dbe4469bf57b502d605ad, type: 2}
@@ -341,7 +345,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8926591791513771709}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1, y: -0.52, z: 0}
+  m_LocalPosition: {x: 1.3, y: -0.52, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8926591790655765530}

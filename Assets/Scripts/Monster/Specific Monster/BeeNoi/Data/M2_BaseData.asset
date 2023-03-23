@@ -12,11 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d62783c8a1c13d49a0c6c329c4f9e3b, type: 3}
   m_Name: M2_BaseData
   m_EditorClassIdentifier: 
+  maxHealth: 45
   wallCheckDistance: 0
   ledgeCheckDistance: 0
   alertRange: 13
   attackRange: 8
   chasingRange: 18
+  knockForce: 30
   whatIsGround:
     serializedVersion: 2
     m_Bits: 0

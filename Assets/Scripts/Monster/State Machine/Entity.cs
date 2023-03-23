@@ -172,7 +172,10 @@ public class Entity : MonoBehaviour
     {
         currentHealth -= amount;
         DamageFlash();
-        // Debug.Log("Monster Receive Damage called from entity");
+        if (currentHealth <= 0 )
+        {
+            Die();
+        }
     }
 
     public virtual void Die()
@@ -201,6 +204,7 @@ public class Entity : MonoBehaviour
         aliveGO.GetComponent<SpriteRenderer>().material = defaultMaterial;
         flashRoutine = null;
     }
+
     
 
     public virtual void OnDrawGizmos() // draw line to debugging

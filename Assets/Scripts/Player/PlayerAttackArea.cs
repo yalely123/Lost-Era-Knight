@@ -11,7 +11,7 @@ public class PlayerAttackArea : MonoBehaviour
         if (collider.GetComponent<PlayerHealth>() != null)
         {
             PlayerHealth playerhealth = collider.GetComponent<PlayerHealth>();
-            playerhealth.ReceiveDamage(damage);
+            //playerhealth.ReceiveDamage(damage);
 
             Debug.Log("attack hit player!");
         }
