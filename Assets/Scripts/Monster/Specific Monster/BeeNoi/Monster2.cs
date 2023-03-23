@@ -10,6 +10,7 @@ public class Monster2 : Entity
     public M2_ChasePlayerState chasePlayerState { get; private set; }
     public M2_ChooseAttackStyleState chooseAttackStyleState { get; private set; }
     public M2_ShootStingState shootStingState { get; private set; }
+    public M2_CoolDownState coolDownState { get; private set; }
 
     [SerializeField]
     private D_IdleState idleStateData;
@@ -23,6 +24,8 @@ public class Monster2 : Entity
     private D_ChooseAttackStyleState chooseAttackStyleStateData;
     [SerializeField]
     private D_ShootProjectileState shootProjectileStateData;
+    [SerializeField]
+    private D_CoolDownState coolDownStateData;
 
     [SerializeField]
     private Transform attackPosition;
@@ -37,6 +40,7 @@ public class Monster2 : Entity
         chasePlayerState = new M2_ChasePlayerState(this, stateMachine, "chasePlayer", chasePlayerStateData, this);
         chooseAttackStyleState = new M2_ChooseAttackStyleState(this, stateMachine, "chooseAttackStyle", chooseAttackStyleStateData, this);
         shootStingState = new M2_ShootStingState(this, stateMachine, "shootSting", attackPosition, shootProjectileStateData, this);
+        coolDownState = new M2_CoolDownState(this, stateMachine, "coolDown", coolDownStateData, this);
         stateMachine.InitializeState(idleState);
     }
 

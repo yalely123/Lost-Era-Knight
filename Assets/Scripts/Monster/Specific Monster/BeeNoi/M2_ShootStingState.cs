@@ -26,7 +26,7 @@ public class M2_ShootStingState : ShootProjectileState
     public override void FinishAttack()
     {
         base.FinishAttack();
-        finiteStateMachine.ChangeState(monster.idleState);
+        finiteStateMachine.ChangeState(monster.coolDownState);
     }
 
     public override void LogicUpdate()

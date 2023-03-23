@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chaseSpeed: 7
   chaseTime: 5
+  secondChaseSpeed: 0.5

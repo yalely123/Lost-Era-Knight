@@ -5,12 +5,16 @@ using UnityEngine;
 public class PlayerAttack : MonoBehaviour
 {
     [SerializeField]
-    private bool attacking = false;
-    public float timeToAttack = 0.3f;
-    private float timer = 0.0f;
+    private bool isAttacking = false, 
+                 isAttackInputed = false; // mean that player press attack button(x)
+
+    public float attackRadius = 1.35f,
+                 attackDamage = 15f;
+
     private string side = "default";
-    public float attackRadius = 1.35f;
-    public float attackDamage = 15f;
+
+    private bool canMeleeHit;
+    private bool isAttackHit;
 
     private Animator anim;
     public Transform attackArea;
@@ -25,6 +29,17 @@ public class PlayerAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CheckAttackDirectionInput();
+        CheckAttackInput();
+        if (isAttackInputed && !isAttacking) // check that player can attack only if press attack and that time player is not attacking
+        {
+            TriggerAttack();
+        }
+
+    }
+
+    private void CheckAttackDirectionInput()
+    {
         if (Input.GetKey(KeyCode.UpArrow))
         {
             side = "top";
@@ -37,48 +52,60 @@ public class PlayerAttack : MonoBehaviour
         {
             side = "default";
         }
+    }
 
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Attack(side);
-        }
-        if (attacking)
-        {
-            timer += Time.deltaTime;
-            
-            if (timer >= timeToAttack)
-            {
-                timer = 0;
-                attacking = false;
-                anim.SetBool("isAttacking", attacking);
-            }
-        }
+    private void CheckAttackInput()
+    {
+        isAttackInputed = Input.GetKeyDown(KeyCode.X);
     }
 
     private void Attack(string side = "default")
     {
-        attacking = true;
+        isAttacking = true;
         if (side == "default")
         {
-            // attackArea.SetActive(attacking); // this line is for anable child object
-            anim.SetBool("isAttacking", attacking);
-            Collider2D[] attackCollision = Physics2D.OverlapCircleAll(attackArea.transform.position, attackRadius);
-            foreach (Collider2D coll in attackCollision)
-            {
-                if (coll.tag == "Monster")
-                {
-                    Debug.Log("Player hit monster");
-                    coll.GetComponentInParent<Entity>().SendMessage("ReceiveDamage", attackDamage); ;
-                }
+            anim.SetBool("isAttacking", isAttacking);
+            if (!isAttackHit)
+            { 
+                CheckAttackHit();
             }
         }
     }
 
-    private void setOffIsAttacking()
+    private void CheckAttackHit ()
     {
-        attacking = false;
-        anim.SetBool("isAttacking", false);
+        Collider2D[] attackCollision = Physics2D.OverlapCircleAll(attackArea.transform.position, attackRadius);
+        foreach (Collider2D coll in attackCollision)
+        {
+            if (coll.tag == "Monster") // this mean that attack hit monster
+            {
+                isAttackHit = true;
+                if (canMeleeHit)
+                { SendDamage(coll, attackDamage); } // send damage to that monster
+            }
+        }
+    }
+
+    private void SendDamage(Collider2D coll, float damage)
+    {
+        coll.GetComponentInParent<Entity>().SendMessage("ReceiveDamage", damage);
+    }
+
+    public void TriggerAttack()
+    {
+        isAttacking = true;
+        isAttackHit = false;
+        canMeleeHit = true;
+        anim.SetBool("isAttacking", isAttacking);
+        Attack(side);
+    }
+
+    public void FinishAttack()
+    {
+        isAttacking = false;
+        canMeleeHit = true;
+        isAttackHit = false;
+        anim.SetBool("isAttacking", isAttacking);
     }
 
     

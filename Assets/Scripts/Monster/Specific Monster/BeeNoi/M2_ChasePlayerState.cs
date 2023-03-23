@@ -42,9 +42,11 @@ public class M2_ChasePlayerState : ChasePlayerState
         {
             // TODO: Do chasing player
             //Debug.Log(entity.facingDirection);
-            entity.aliveGO.transform.position = Vector2.MoveTowards(entity.aliveGO.transform.position,
-                new Vector2(entity.playerCheck.position.x + (-5*entity.facingDirection), entity.playerCheck.position.y + 5), 
-                stateData.chaseSpeed * Time.deltaTime);
+            flyTowardPlayer(stateData.chaseSpeed);
+        }
+        else if (isPlayerInAttackCircleRange && (attackPositionDistance > distanceOffset))
+        {
+            flyTowardPlayer(stateData.secondChaseSpeed);
         }
 
         else if (isPlayerInAttackCircleRange && (attackPositionDistance <= distanceOffset))
@@ -70,5 +72,12 @@ public class M2_ChasePlayerState : ChasePlayerState
         isPlayerInAttackCircleRange = entity.CheckPlayerInAttackCircleRange();
         attackPositionDistance = Vector2.Distance(monster.aliveGO.transform.position,
             new Vector2(entity.playerCheck.position.x + (-5 * entity.facingDirection), entity.playerCheck.position.y + 5));
+    }
+
+    private void flyTowardPlayer(float speed)
+    {
+        entity.aliveGO.transform.position = Vector2.MoveTowards(entity.aliveGO.transform.position,
+                new Vector2(entity.playerCheck.position.x + (-5 * entity.facingDirection), entity.playerCheck.position.y + 5),
+                speed * Time.deltaTime);
     }
 }

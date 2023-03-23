@@ -172,7 +172,7 @@ public class Entity : MonoBehaviour
     {
         currentHealth -= amount;
         DamageFlash();
-        Debug.Log("Monster Receive Damage called from entity");
+        // Debug.Log("Monster Receive Damage called from entity");
     }
 
     public virtual void Die()

@@ -7,4 +7,5 @@ public class D_ChasePlayerState : ScriptableObject
 {
     public float chaseSpeed = 10f;
     public float chaseTime = 5f;
+    public float secondChaseSpeed = 5f;
 }
