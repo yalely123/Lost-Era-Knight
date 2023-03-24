@@ -18,7 +18,11 @@ MonoBehaviour:
   alertRange: 13
   attackRange: 8
   chasingRange: 18
-  knockForce: 30
+  colliderWidth: 1.03
+  colliderHeight: 1.41
+  colliderXOffset: 0
+  colliderYOffset: 0.02
+  bodyTouchDamage: 15
   whatIsGround:
     serializedVersion: 2
     m_Bits: 0

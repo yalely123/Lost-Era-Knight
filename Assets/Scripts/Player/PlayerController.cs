@@ -227,7 +227,7 @@ public class PlayerController : MonoBehaviour
 
     private void Jump()
     {
-        if (canJump && !isWallSliding) // proper jump (jump from the ground)
+        if (canJump && !isWallSliding && !isKnocking) // proper jump (jump from the ground)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             jumpAmountLeft -= 1;

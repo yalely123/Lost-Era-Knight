@@ -45,18 +45,18 @@ public class Entity : MonoBehaviour
         isAlert = false;
 
         currentHealth = entityData.maxHealth;
-
     }
 
     public virtual void Update()
     {
+        SendDamageIfPlayerTouchMonsterHitBox();
         stateMachine.currentState.LogicUpdate();
-        
     }
 
     public virtual void FixedUpdate()
     {
         CheckIfMonsterDead();
+        
         stateMachine.currentState.PhysicUpdate();
     }
 
@@ -119,6 +119,22 @@ public class Entity : MonoBehaviour
             if (coll.tag == "Player") { return true; }
         }
         return false;
+    }
+
+    public virtual void SendDamageIfPlayerTouchMonsterHitBox()
+    {
+        // check if player touch monster call player to receive damage
+        Vector2 monsterHitBox = new Vector2(entityData.colliderWidth, entityData.colliderHeight);
+        Collider2D[] bodyHitBox = Physics2D.OverlapBoxAll(aliveGO.transform.position, monsterHitBox, 0);
+        foreach (Collider2D coll in bodyHitBox)
+        {
+            if (coll.tag == "Player")
+            {
+                coll.gameObject.GetComponent<PlayerHealth>()
+                    .ReceiveDamage(entityData.bodyTouchDamage, 
+                                   aliveGO.transform.position.x);
+            }
+        }
     }
 
     public virtual bool CheckIfNeedToFlip()
@@ -213,6 +229,9 @@ public class Entity : MonoBehaviour
                         wallCheck.position + (Vector3)(Vector2.right * facingDirection * entityData.wallCheckDistance));
         Gizmos.DrawLine(ledgeCheck.position, 
                         ledgeCheck.position + (Vector3)(Vector2.down * entityData.ledgeCheckDistance));
+        Gizmos.DrawWireCube(new Vector2 (aliveGO.transform.position.x + entityData.colliderXOffset,
+                                         aliveGO.transform.position.y + entityData.colliderYOffset), 
+                           new Vector2(entityData.colliderWidth, entityData.colliderHeight));
     }
 
 }
