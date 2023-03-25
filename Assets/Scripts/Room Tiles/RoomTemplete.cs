@@ -17,6 +17,7 @@ public class RoomTemplete : MonoBehaviour
     
     private void Start()
     {
+        player = GameObject.Find("Player");
         ChooseStartRoomTile();
     }
 

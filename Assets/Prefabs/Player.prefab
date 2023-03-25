@@ -372,3 +372,4 @@ MonoBehaviour:
   stunTime: 0
   deadShown: 0
   isHitable: 0
+  healthBar: {fileID: 0}

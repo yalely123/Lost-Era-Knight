@@ -13,12 +13,15 @@ public class PlayerHealth : MonoBehaviour
     private bool deadShown = false;
     [SerializeField]
     private bool isHitable;
-    private bool isInvincEnd;
+    //private bool isInvincEnd;
 
     private Rigidbody2D rb;
     private PlayerController controller;
     private SpriteRenderer playerSprite;
     private Coroutine flashRoutine;
+
+    [SerializeField]
+    private HealthBar healthBar;
     
     void Start()
     {
@@ -28,7 +31,8 @@ public class PlayerHealth : MonoBehaviour
         playerSprite = gameObject.GetComponent<SpriteRenderer>();
         isHitable = true;
         flashRoutine = null;
-        isInvincEnd = false;
+        healthBar = GameObject.Find("Health Bar").GetComponent<HealthBar>();
+        healthBar.SetMaxHealth(maxHealth);
     }
     void Update()
     {
@@ -77,7 +81,8 @@ public class PlayerHealth : MonoBehaviour
             health -= amount;
             controller.isHit = true;
             controller.attackXPos = xPos;
-            
+
+            healthBar.SetHealth(health);
         }
         
         if (health > 0)

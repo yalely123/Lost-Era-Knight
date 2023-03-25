@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Room : MonoBehaviour
+public class Room
 {
     [SerializeField]
     // private bool istraveled = false;
@@ -10,18 +10,15 @@ public class Room : MonoBehaviour
                         rightPossibleAttachRoom,
                         buttomPossibleAttachRoom,
                         leftPossibleAttachRoom;
-    public Room topAttrachRoom;
-    public Room rightAttrachRoom;
-    public Room buttomAttrachRoom;
-    public Room leftAttrachRoom;
-
     public Transform door;
-    public Transform player;
+    //public Transform player;
     public Transform playerSpawnPoint;
 
     private void Start()
     {
         //door = transform.Find("RoomDoor");
+        //player = GameObject.Find("Player").GetComponent<Transform>();
+    
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -38,8 +35,10 @@ public class Room : MonoBehaviour
 
     public void bringPlayerToStartPosition()
     {
-        player.position = playerSpawnPoint.position;
+        //player.position = playerSpawnPoint.position;
     }
 
     // TODO: collect all room that can traverse or traversed
+
+
 }

@@ -8943,7 +8943,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4590674102519323524}
   - component: {fileID: 8410882631618997872}
-  - component: {fileID: 6144781120029100413}
   m_Layer: 0
   m_Name: TRL
   m_TagString: Untagged
@@ -8982,50 +8981,3 @@ Grid:
   m_CellGap: {x: 0, y: 0, z: 0}
   m_CellLayout: 0
   m_CellSwizzle: 0
---- !u!114 &6144781120029100413
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7444845408813757993}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08a61abdca52ae441b86286bf4c3a232, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  topPossibleAttachRoom:
-  - {fileID: 2550531299827189343, guid: 69210bd2f3cb4b044b1e784282f8cc4a, type: 3}
-  - {fileID: 6582426498695665739, guid: 4e2e55f8c3b1a8b418f593fb365c359b, type: 3}
-  - {fileID: 6272038205610213497, guid: a6acdbf9337c56a4ead4f701c229f32d, type: 3}
-  - {fileID: 6835139265192561111, guid: ec4482dfc142049429a0c5b3de254d4d, type: 3}
-  - {fileID: 2941186737989627307, guid: c875c95ec0429c24ea131c2912eb0000, type: 3}
-  - {fileID: 4180145039273888581, guid: d0892d149491e5b4d9fd2055dcda2029, type: 3}
-  - {fileID: 6520237310800979802, guid: 460617a2945dfc3439284e42bb09f870, type: 3}
-  - {fileID: 4695210682851929872, guid: 8342d41fd10b71d49b552e336b9ec33d, type: 3}
-  rightPossibleAttachRoom:
-  - {fileID: 6582426498695665739, guid: 4e2e55f8c3b1a8b418f593fb365c359b, type: 3}
-  - {fileID: 3097753744938058979, guid: e7817aa82f75a8a4db3cc2c195aa5c6a, type: 3}
-  - {fileID: 6835139265192561111, guid: ec4482dfc142049429a0c5b3de254d4d, type: 3}
-  - {fileID: 7111030023836030812, guid: 105ca0d64f6a3a94296eba6267b66d23, type: 3}
-  - {fileID: 4180145039273888581, guid: d0892d149491e5b4d9fd2055dcda2029, type: 3}
-  - {fileID: 2191675530682061246, guid: c7d2beb69816dcd43b4cb1a4654d7b9e, type: 3}
-  - {fileID: 4695210682851929872, guid: 8342d41fd10b71d49b552e336b9ec33d, type: 3}
-  - {fileID: 7444845408813757993}
-  buttomPossibleAttachRoom: []
-  leftPossibleAttachRoom:
-  - {fileID: 3021924850093752049, guid: 4669d68ecaae92441abf3da2123049ca, type: 3}
-  - {fileID: 6272038205610213497, guid: a6acdbf9337c56a4ead4f701c229f32d, type: 3}
-  - {fileID: 6835139265192561111, guid: ec4482dfc142049429a0c5b3de254d4d, type: 3}
-  - {fileID: 7111030023836030812, guid: 105ca0d64f6a3a94296eba6267b66d23, type: 3}
-  - {fileID: 7521056528290139939, guid: 85f91ddd4d83dd146ad4b4d1ca6d7a87, type: 3}
-  - {fileID: 6520237310800979802, guid: 460617a2945dfc3439284e42bb09f870, type: 3}
-  - {fileID: 4695210682851929872, guid: 8342d41fd10b71d49b552e336b9ec33d, type: 3}
-  - {fileID: 7444845408813757993}
-  topAttrachRoom: {fileID: 0}
-  rightAttrachRoom: {fileID: 0}
-  buttomAttrachRoom: {fileID: 0}
-  leftAttrachRoom: {fileID: 0}
-  door: {fileID: 0}
-  player: {fileID: 0}
-  playerSpawnPoint: {fileID: 5867510986665768981}
