@@ -17,7 +17,7 @@ public class RoomTemplete : MonoBehaviour
     
     private void Start()
     {
-        ChooseStartRoomTile(9);
+        ChooseStartRoomTile();
     }
 
     public void ChooseStartRoomTile()

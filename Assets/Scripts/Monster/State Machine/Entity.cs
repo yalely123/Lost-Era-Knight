@@ -20,8 +20,9 @@ public class Entity : MonoBehaviour
     private Transform wallCheck;
     [SerializeField]
     private Transform ledgeCheck;
-    [SerializeField]
     public Transform playerCheck;
+    
+    public Transform playerTransform;
 
     public bool isAlert;
     [SerializeField]
@@ -40,6 +41,7 @@ public class Entity : MonoBehaviour
         rb = aliveGO.GetComponent<Rigidbody2D>();
         anim = aliveGO.GetComponent<Animator>();
         atsm = aliveGO.GetComponent<AnimationToStatemachine>();
+        playerTransform = GameObject.Find("Player").GetComponent<Transform>();
 
         stateMachine = new FiniteStateMachine();
         isAlert = false;
@@ -139,13 +141,13 @@ public class Entity : MonoBehaviour
 
     public virtual bool CheckIfNeedToFlip()
     {
-        if (playerCheck != null)
+        if (playerTransform != null)
         {
-            if (playerCheck.position.x > aliveGO.transform.position.x && facingDirection != 1 && isAlert)
+            if (playerTransform.position.x > aliveGO.transform.position.x && facingDirection != 1 && isAlert)
             {
                 return true;
             }
-            else if (playerCheck.position.x < aliveGO.transform.position.x && facingDirection != -1 && isAlert)
+            else if (playerTransform.position.x < aliveGO.transform.position.x && facingDirection != -1 && isAlert)
             {
                 return true;
             }
@@ -160,10 +162,10 @@ public class Entity : MonoBehaviour
     
     public virtual Vector2 CheckPlayerAngle()
     {
-        if (playerCheck != null)
+        if (playerTransform != null)
         {
-            Vector2 angle = new Vector2(playerCheck.position.x - aliveGO.transform.position.x,
-                playerCheck.position.y - aliveGO.transform.position.y);
+            Vector2 angle = new Vector2(playerTransform.position.x - aliveGO.transform.position.x,
+                playerTransform.position.y - aliveGO.transform.position.y);
             return angle;
         }
         else return Vector2.zero;

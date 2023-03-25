@@ -16,13 +16,13 @@ public class M2_ChasePlayerState : ChasePlayerState
     {
         this.monster = monster;
     }
-
+    
     public override void Enter()
     {
         base.Enter();
         isNeedToFlip = entity.CheckIfNeedToFlip();
         //Debug.Log("Bee: Enter ChasePlayerState");
-        attackPositionDistance = Vector2.Distance(monster.aliveGO.transform.position, entity.playerCheck.position);
+        attackPositionDistance = Vector2.Distance(monster.aliveGO.transform.position, entity.playerTransform.position);
     }
 
     public override void Exit()
@@ -71,13 +71,13 @@ public class M2_ChasePlayerState : ChasePlayerState
         isNeedToFlip = entity.CheckIfNeedToFlip();
         isPlayerInAttackCircleRange = entity.CheckPlayerInAttackCircleRange();
         attackPositionDistance = Vector2.Distance(monster.aliveGO.transform.position,
-            new Vector2(entity.playerCheck.position.x + (-5 * entity.facingDirection), entity.playerCheck.position.y + 5));
+            new Vector2(entity.playerTransform.position.x + (-5 * entity.facingDirection), entity.playerTransform.position.y + 5));
     }
 
     private void flyTowardPlayer(float speed)
     {
         entity.aliveGO.transform.position = Vector2.MoveTowards(entity.aliveGO.transform.position,
-                new Vector2(entity.playerCheck.position.x + (-5 * entity.facingDirection), entity.playerCheck.position.y + 5),
+                new Vector2(entity.playerTransform.position.x + (-5 * entity.facingDirection), entity.playerTransform.position.y + 5),
                 speed * Time.deltaTime);
     }
 }
