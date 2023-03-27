@@ -11,7 +11,7 @@ public class RoomDoor : MonoBehaviour
         if (collider.tag == "Player")
         {
             // TODO: call function in roomTemplete to change room
-            roomTemplete.ChangeRoomTile(name);
+            //roomTemplete.ChangeRoomTile(name);
             // Debug.Log(name);
         }
     }

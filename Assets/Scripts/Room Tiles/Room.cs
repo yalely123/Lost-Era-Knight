@@ -2,43 +2,101 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Room
+public class Room : MonoBehaviour
 {
+    public bool istraveled = false;
+    public bool hasTopDoor, hasRightDoor, hasBottomDoor, hasLeftDoor;
+    public int gridPosX, gridPosY;
+    public Dictionary<string, Room> nextRoom;
+    //public Transform door;
     [SerializeField]
-    // private bool istraveled = false;
-    public GameObject[] topPossibleAttachRoom,
-                        rightPossibleAttachRoom,
-                        buttomPossibleAttachRoom,
-                        leftPossibleAttachRoom;
-    public Transform door;
-    //public Transform player;
+    private Transform playerTransform;
     public Transform playerSpawnPoint;
+    public GameObject tileFormat;
+    public LevelGenerator levelGen;
+
 
     private void Start()
     {
-        //door = transform.Find("RoomDoor");
-        //player = GameObject.Find("Player").GetComponent<Transform>();
-    
+        levelGen = GameObject.Find("Room Templete").GetComponent<LevelGenerator>();
+        SetBoolDoor();
+        RandomlyConnectRoom();
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    public void BringPlayerToStartPosition()
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (playerTransform != null)
         {
-            if (other.transform == door)
-            {
-                Debug.Log("Tung Tong");
-            }
-            
+            playerTransform.position = playerSpawnPoint.position;
+        }else
+        {
+            Debug.Log("Player Transform is not found");
         }
     }
 
-    public void bringPlayerToStartPosition()
+    private void SetBoolDoor()
     {
-        //player.position = playerSpawnPoint.position;
+        foreach (char c in gameObject.name)
+        {
+            if (c == '(') { break; } // prefab generate to hierachy there will be (clone) follow by the name
+            if (char.ToUpper(c) == 'T')
+            {
+                hasTopDoor = true;
+            }
+            if (char.ToUpper(c) == 'R')
+            {
+                hasRightDoor = true;
+            }
+            if (char.ToUpper(c) == 'B')
+            {
+                hasBottomDoor = true;
+            }
+            if (char.ToUpper(c) == 'L')
+            {
+                Debug.Log(c);
+                hasLeftDoor = true;
+            }
+        }
     }
 
-    // TODO: collect all room that can traverse or traversed
+    public void SetPositionInGrid(int x, int y)
+    {
+        gridPosX = x;
+        gridPosY = y;
+    }
 
+    public void SetPlayerTransform(Transform player)
+    {
+        playerTransform = player;  
+    }
+
+    public void RandomlyConnectRoom()
+    {
+        // TODO: choose room that can connect relate to grid
+        string sideToConnect;
+        if (levelGen.amountRoom > 0)
+        {
+            if (hasTopDoor)
+            {
+                sideToConnect = "top";
+                levelGen.RandomNextTile(this, sideToConnect);
+            }
+            if (hasRightDoor)
+            {
+                sideToConnect = "right";
+                levelGen.RandomNextTile(this, sideToConnect);
+            }
+            if (hasBottomDoor)
+            {
+                sideToConnect = "bottom";
+                levelGen.RandomNextTile(this, sideToConnect);
+            }
+            if (hasLeftDoor)
+            {
+                sideToConnect = "left";
+                levelGen.RandomNextTile(this, sideToConnect);
+            }
+        }
+    }
 
 }

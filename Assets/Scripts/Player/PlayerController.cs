@@ -10,21 +10,25 @@ public class PlayerController : MonoBehaviour
     private float movementInputDirection;
     public float jumpForce = 20f;
     public float jumpHeightMultiplier = 0.5f;
+    public float maxYVelocity = 30f;
     public int jumpAmount = 2;
     public int jumpAmountLeft;
     public float wallSlidingSpeed;
     public float wallJumpForce = 15f;
+    public float wallJumpCoolDownDuration = 0.2f;
+    public float wallJumpTriggerTime;
 
     private bool isWalking;
     private bool isFacingRight = true;
     public bool isGrounded;
     public bool canJump;
     public bool isTouchingWall;
-    public bool isWallSliding;
+    public static bool isWallSliding;
+    public static bool isWallJumpingCoolingDown = false;
     public bool isHit = false;
 
     public float knockDuration;
-    private bool isKnocking;
+    public static bool isKnocking;
     private float knockTriggerTime;
     public float knockFiction;
     public float knockBackForce;
@@ -59,12 +63,9 @@ public class PlayerController : MonoBehaviour
         CheckIfCanJump();
         CheckIfWallSliding();
         CheckIfIsHit();
+        CheckIfWallJumpCoolingDown();
+        CheckIfPlayerSpeedAboveRange();
 
-        if (Input.GetKeyDown(KeyCode.Backspace))
-        {
-            transform.SetPositionAndRotation(new Vector2(-2, 3), transform.rotation);
-            rb.velocity = new Vector2(0f, -1.0f);
-        }
     }
 
     private void FixedUpdate()
@@ -87,12 +88,18 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, rb.velocity.y * jumpHeightMultiplier);
         }
 
+        if (Input.GetKeyDown(KeyCode.Backspace)) // for Reposition player to world origin (0,0,0)
+        {
+            transform.SetPositionAndRotation(new Vector2(-2, 3), transform.rotation);
+            rb.velocity = new Vector2(0f, -1.0f);
+        }
+
     }
     private void ApplyMovement()
     {
         if (isKnocking)
         {
-            if (isGrounded)
+            if (isGrounded) // breaking sliding speed while knocking back
             {
                 rb.AddForce(new Vector2(rb.velocity.x * -Time.deltaTime * knockFiction, 0), ForceMode2D.Impulse);
             }
@@ -101,7 +108,8 @@ public class PlayerController : MonoBehaviour
                 isKnocking = false;
             }
         }
-        else
+
+        else if (!isKnocking && !isWallJumpingCoolingDown)
         {
             if (isGrounded && !isWallSliding) // add this condition to fix walljump x axis cant add force
             {
@@ -196,10 +204,30 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void CheckIfWallJumpCoolingDown()
+    {
+        if (Time.time > wallJumpTriggerTime + wallJumpCoolDownDuration)
+        {
+            isWallJumpingCoolingDown = false;
+        }
+        else
+        {
+            isWallJumpingCoolingDown = true;
+        }
+    }
+
     private void CheckSurroundings()
     {
         isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
         isTouchingWall = Physics2D.Raycast(wallCheck.position, transform.right, wallCheckDistance, whatIsGround);
+    }
+
+    private void CheckIfPlayerSpeedAboveRange()
+    {
+        if (rb.velocity.y < -maxYVelocity)
+        {
+            rb.velocity = new Vector2(rb.velocity.x, -maxYVelocity);
+        }
     }
 
     private void KnockBack()
@@ -233,6 +261,8 @@ public class PlayerController : MonoBehaviour
             jumpAmountLeft -= 1;
         }else if (isWallSliding) { // wall jumping/hopping
             isWallSliding = false;
+
+            wallJumpTriggerTime = Time.time;
             Vector2 calculatedWallJumpForceToAdd = new Vector2(wallJumpDirection.x * wallJumpForce * -facingDirection, 
                                     wallJumpDirection.y * wallJumpForce);
             rb.AddForce(calculatedWallJumpForceToAdd, ForceMode2D.Impulse);

@@ -31,9 +31,14 @@ public class PlayerAttack : MonoBehaviour
     {
         CheckAttackDirectionInput();
         CheckAttackInput();
-        if (isAttackInputed && !isAttacking) // check that player can attack only if press attack and that time player is not attacking
+        if (isAttackInputed && !isAttacking 
+            && !PlayerController.isWallJumpingCoolingDown && !PlayerController.isWallSliding) // check that player can attack only if press attack and that time player is not attacking
         {
             TriggerAttack();
+        }
+        if (PlayerController.isKnocking)
+        {
+            FinishAttack();
         }
 
     }

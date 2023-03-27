@@ -6,8 +6,9 @@ public class RoomSpawner : MonoBehaviour
 {
     public GameObject player;
 
-    public void bringPlayerToStartPosition()
+    private void Start()
     {
-        player.transform.Translate(transform.position);
+        player = GameObject.Find("Player");
     }
+
 }

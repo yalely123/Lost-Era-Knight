@@ -18,7 +18,7 @@ public class RoomTemplete : MonoBehaviour
     private void Start()
     {
         player = GameObject.Find("Player");
-        ChooseStartRoomTile();
+        //ChooseStartRoomTile();
     }
 
     public void ChooseStartRoomTile()
@@ -31,7 +31,7 @@ public class RoomTemplete : MonoBehaviour
         currentRoom = currentTile.GetComponent<Room>();
         //Instantiate(currentTile, Vector2.zero, Quaternion.identity);
         currentTile.SetActive(true);
-        currentRoom.bringPlayerToStartPosition();
+        currentRoom.BringPlayerToStartPosition();
     }
 
     public void ChooseStartRoomTile(int tilesIndex)
@@ -42,7 +42,7 @@ public class RoomTemplete : MonoBehaviour
         currentRoom = currentTile.GetComponent<Room>();
         //Instantiate(currentTile, Vector2.zero, Quaternion.identity);
         currentTile.SetActive(true);
-        currentRoom.bringPlayerToStartPosition();
+        currentRoom.BringPlayerToStartPosition();
     }
 
     public void ChangeRoomTile(string from = "default") // from take side that player enter door

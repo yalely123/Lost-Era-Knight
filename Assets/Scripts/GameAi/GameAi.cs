@@ -8,7 +8,8 @@ public static class GameAi
     // to make that use public static to make this class global
     public static int monsterKillCount = 0,
                       deadCount = 0,
-                      getHitCount = 0;
+                      getHitCount = 0,
+                      maxRooms = 10;
 
     public static float levelScore;
 
