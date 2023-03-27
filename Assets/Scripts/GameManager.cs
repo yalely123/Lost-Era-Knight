@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
         // TODO: change scene to try again scene
 
         Debug.Log("Game is forced to be END play through by Game Manager!");
+        SceneManager.LoadScene("Victory");
         isGameStopped = true;
         isGameRunning = false;
     }

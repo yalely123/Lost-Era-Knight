@@ -132,8 +132,6 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-
-
     public void InstantiateNewRoom(List<GameObject> randSet, 
         int gridPosX, int gridPosY, bool bringPlayerToSpawnPoint = false)
     {

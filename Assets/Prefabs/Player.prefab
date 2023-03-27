@@ -173,7 +173,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3965803733216929759}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.338, y: -0.205, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3965803732971557220}
@@ -314,17 +314,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   facingDirection: 1
   movementForceInAir: 30
-  movementSpeed: 10
-  jumpForce: 20
+  movementSpeed: 13
+  jumpForce: 22
   jumpHeightMultiplier: 0.5
+  maxYVelocity: 50
   jumpAmount: 2
   jumpAmountLeft: 0
   wallSlidingSpeed: 3
   wallJumpForce: 30
+  wallJumpCoolDownDuration: 0.15
+  wallJumpTriggerTime: 0
   isGrounded: 0
   canJump: 0
   isTouchingWall: 0
-  isWallSliding: 0
   isHit: 0
   knockDuration: 0.75
   knockFiction: 5

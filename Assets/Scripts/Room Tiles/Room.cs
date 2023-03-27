@@ -12,7 +12,6 @@ public class Room : MonoBehaviour
     [SerializeField]
     private Transform playerTransform;
     public Transform playerSpawnPoint;
-    public GameObject tileFormat;
     public LevelGenerator levelGen;
 
 
@@ -53,7 +52,6 @@ public class Room : MonoBehaviour
             }
             if (char.ToUpper(c) == 'L')
             {
-                Debug.Log(c);
                 hasLeftDoor = true;
             }
         }

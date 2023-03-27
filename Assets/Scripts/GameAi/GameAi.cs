@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class GameAi
 {
@@ -81,5 +82,12 @@ public static class GameAi
     public static int getNumberOfMonsterInMap()
     {
         return monsterLeft.Length;
+    }
+    
+    public static void LoadGameOverScene()
+    {
+        // TODO: Load Game Over Scene
+        Debug.Log("Go to Game Over Scene");
+        SceneManager.LoadScene("Game Over");
     }
 }

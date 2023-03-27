@@ -60,10 +60,8 @@ public class PlayerHealth : MonoBehaviour
             deadShown = true;
         }
         GameAi.deadCount += 1;
-        /*
-        GameAi.KillAllMonsters();
-        */
         Destroy(gameObject); // Destroy player object (player is dead, shouldn't show on sceen)
+        GameAi.LoadGameOverScene();
     }
 
     public void ReceiveDamage(float amount, float xPos) // this funciton is for receive damage and calculate how much to decrease health
