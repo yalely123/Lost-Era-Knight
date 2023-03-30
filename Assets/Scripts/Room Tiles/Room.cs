@@ -7,6 +7,7 @@ public class Room : MonoBehaviour
     public bool istraveled = false;
     public bool hasTopDoor, hasRightDoor, hasBottomDoor, hasLeftDoor;
     public int gridPosX, gridPosY;
+    public int roomType; // 0 is normal room, 1 is start room and 2 is ending room
     public Dictionary<string, Room> nextRoom;
     //public Transform door;
     [SerializeField]
@@ -17,7 +18,8 @@ public class Room : MonoBehaviour
 
     private void Start()
     {
-        levelGen = GameObject.Find("Room Templete").GetComponent<LevelGenerator>();
+        if (GameObject.Find("Room Templete").GetComponent<LevelGenerator>() != null)
+            levelGen = GameObject.Find("Room Templete").GetComponent<LevelGenerator>();
         SetBoolDoor();
         RandomlyConnectRoom();
     }
@@ -72,7 +74,7 @@ public class Room : MonoBehaviour
     {
         // TODO: choose room that can connect relate to grid
         string sideToConnect;
-        if (levelGen.amountRoom > 0)
+        if (levelGen != null && levelGen.amountRoom > 0)
         {
             if (hasTopDoor)
             {

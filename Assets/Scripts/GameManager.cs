@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static bool isGameRunning { get; private set; }
+    public static bool isPlayerReachFinishPortal;
 
     [SerializeField]
     private bool isGameStopped;
@@ -17,15 +18,16 @@ public class GameManager : MonoBehaviour
     {
         isGameStopped = false;
         isGameRunning = true;
+        isPlayerReachFinishPortal = false;
         player = GameObject.Find("Player").GetComponent<Transform>();
-        Debug.Log("From Game Manager: ");
-        Debug.Log(player);
+        //Debug.Log("From Game Manager: ");
+        //Debug.Log(player);
     }
 
     private void Update()
     {
         CheckKeyBoardInput();
-        
+        CheckIfPlayerReachFinishPortal();
     }
 
     private void CheckKeyBoardInput ()
@@ -50,5 +52,18 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("Victory");
         isGameStopped = true;
         isGameRunning = false;
+    }
+
+    public static void SetGameBeforeStart()
+    {
+        // TODO: set all variable to false or true to make game ready to start
+    }
+
+    private void CheckIfPlayerReachFinishPortal()
+    {
+        if (isPlayerReachFinishPortal)
+        {
+            ForcedEndGamePlay();
+        }
     }
 }
