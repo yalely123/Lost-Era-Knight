@@ -7,7 +7,8 @@ public class CoolDownState : State
     protected D_CoolDownState stateData;
     protected bool isFinishCoolDown;
 
-    public CoolDownState(Entity entity, FiniteStateMachine finiteStateMachine, string animBoolName, D_CoolDownState stateData) : base(entity, finiteStateMachine, animBoolName)
+    public CoolDownState(Entity entity, FiniteStateMachine finiteStateMachine, string animBoolName, D_CoolDownState stateData) 
+        : base(entity, finiteStateMachine, animBoolName)
     {
         this.stateData = stateData;
     }
@@ -15,6 +16,7 @@ public class CoolDownState : State
     public override void Enter()
     {
         base.Enter();
+        Debug.Log("Moving Stop!");
         entity.SetVelocity(0f);
         isFinishCoolDown = false;
     }

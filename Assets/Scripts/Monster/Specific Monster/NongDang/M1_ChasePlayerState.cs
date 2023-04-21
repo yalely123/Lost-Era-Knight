@@ -5,6 +5,8 @@ using UnityEngine;
 public class M1_ChasePlayerState : ChasePlayerState
 {
     private Monster1 monster;
+    private bool isPlayerInChasingCircleRange;
+    private bool isNeedToFlip;
     public M1_ChasePlayerState(Entity entity, FiniteStateMachine finiteStateMachine, string animBoolName, D_ChasePlayerState stateData, Monster1 monster) 
         : base(entity, finiteStateMachine, animBoolName, stateData)
     {
@@ -14,7 +16,8 @@ public class M1_ChasePlayerState : ChasePlayerState
     public override void Enter()
     {
         base.Enter();
-        
+        isPlayerInChasingCircleRange = monster.CheckPlayerInAlertCircleRange();
+        isNeedToFlip = monster.CheckIfNeedToFlip();
     }
 
     public override void Exit()
@@ -25,13 +28,17 @@ public class M1_ChasePlayerState : ChasePlayerState
     public override void LogicUpdate()
     {
         base.LogicUpdate();
-        // TODO: 1. move toward player, while player in alert range and not in attack range
-        //       2. change to attack state if player in attack range
-        //       3. cahnge to idle state if player is out of alert range
+        isNeedToFlip = monster.CheckIfNeedToFlip();
 
-        if (isPlayerInAlertRange && !isPlayerInAttackRange)
+        if ((isPlayerInChasingCircleRange || isPlayerInAlertRange) && !isPlayerInAttackRange)
         {
             // Do move toward player.
+            if (isNeedToFlip)
+            {
+                
+                entity.Flip();
+                //finiteStateMachine.ChangeState(monster.coolDownState);
+            }
             entity.SetVelocity(stateData.chaseSpeed);
         }
         else if (isPlayerInAttackRange)
@@ -51,5 +58,7 @@ public class M1_ChasePlayerState : ChasePlayerState
     public override void PhysicUpdate()
     {
         base.PhysicUpdate();
+        isPlayerInChasingCircleRange = monster.CheckPlayerInAlertCircleRange();
+        
     }
 }

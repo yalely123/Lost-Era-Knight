@@ -15,6 +15,7 @@ public class M1_IdleState : IdleState
     public override void Enter()
     {
         base.Enter();
+        monster.isAlert = false;
     }
 
     public override void Exit()

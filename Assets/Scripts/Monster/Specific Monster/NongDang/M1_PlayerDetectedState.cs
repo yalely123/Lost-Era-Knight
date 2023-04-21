@@ -5,6 +5,8 @@ using UnityEngine;
 public class M1_PlayerDetectedState : PlayerDetectedState
 {
     private Monster1 monster;
+    
+
     public M1_PlayerDetectedState(Entity entity, FiniteStateMachine finiteStateMachine, string animBoolName, D_PlayerDetectedState stateData, Monster1 monster) 
         : base(entity, finiteStateMachine, animBoolName, stateData)
     {
@@ -14,6 +16,7 @@ public class M1_PlayerDetectedState : PlayerDetectedState
     public override void Enter()
     {
         base.Enter();
+        
     }
 
     public override void Exit()
@@ -34,10 +37,12 @@ public class M1_PlayerDetectedState : PlayerDetectedState
             }
             else if (isPlayerInAttackRange)
             {
+                monster.isAlert = true;
                 finiteStateMachine.ChangeState(monster.chooseAttackStyleState);
             }
             else if (!isPlayerInAttackRange)
             {
+                monster.isAlert = true;
                 finiteStateMachine.ChangeState(monster.chasePlayerState);
             }
         }
@@ -46,5 +51,6 @@ public class M1_PlayerDetectedState : PlayerDetectedState
     public override void PhysicUpdate()
     {
         base.PhysicUpdate();
+        
     }
 }

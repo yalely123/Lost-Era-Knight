@@ -7,9 +7,14 @@ public class GameManager : MonoBehaviour
 {
     public static bool isGameRunning { get; private set; }
     public static bool isPlayerReachFinishPortal;
+    public static bool isGamePaused;
 
     [SerializeField]
     private bool isGameStopped;
+    private bool needToOpenPauseMenu;
+
+    [SerializeField]
+    private static GameObject pauseMenu;
 
     [SerializeField]
     public static Transform player;
@@ -19,6 +24,9 @@ public class GameManager : MonoBehaviour
         isGameStopped = false;
         isGameRunning = true;
         isPlayerReachFinishPortal = false;
+        pauseMenu = GameObject.Find("PasuseMenu");
+        isGamePaused = false;
+        pauseMenu.SetActive(false);
         player = GameObject.Find("Player").GetComponent<Transform>();
         //Debug.Log("From Game Manager: ");
         //Debug.Log(player);
@@ -32,6 +40,7 @@ public class GameManager : MonoBehaviour
 
     private void CheckKeyBoardInput ()
     {
+        // for Debugging change scene to victory scene
         if (Input.GetKey(KeyCode.Alpha4)
             && Input.GetKey(KeyCode.Alpha5)
             && Input.GetKey(KeyCode.Alpha6))
@@ -41,13 +50,31 @@ public class GameManager : MonoBehaviour
                 ForcedEndGamePlay();
             }
         }
+
+        // for open pause menu
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (!isGamePaused) { 
+                OpenPauseMenu();
+            }
+            else
+            {
+                ClosePauseMenu();
+            }
+            
+        }
     }
+
 
     private void ForcedEndGamePlay() 
     {
         // Forced End the current game play this is for Debugging mode
         // TODO: change scene to try again scene
 
+        if (Time.timeScale == 0)
+        {
+            Time.timeScale = 1;
+        }
         Debug.Log("Game is forced to be END play through by Game Manager!");
         SceneManager.LoadScene("Victory");
         isGameStopped = true;
@@ -66,4 +93,27 @@ public class GameManager : MonoBehaviour
             ForcedEndGamePlay();
         }
     }
+
+    private void OpenPauseMenu()
+    {
+        // TODO: pause game then open pause menu and minimap
+        // 1. pause game
+        // 2. set active pause menu
+        Debug.Log("Pause Menu is opened");
+        if (!isGamePaused)
+        {
+            isGamePaused = true;
+            pauseMenu.SetActive(true);
+            Time.timeScale = 0;
+        }
+    }
+
+    public static void ClosePauseMenu()
+    {
+        Debug.Log("Pause Menu is closed");
+        isGamePaused = false;
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1;
+    }
+
 }

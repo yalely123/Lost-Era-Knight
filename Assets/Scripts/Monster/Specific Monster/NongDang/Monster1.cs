@@ -10,6 +10,7 @@ public class Monster1 : Entity
     public M1_ChasePlayerState chasePlayerState { get; private set; }
     public M1_ChooseAttackStyleState chooseAttackStyleState { get; private set; }
     public M1_MeleeAttackState meleeAttackState { get; private set; }
+    public M1_CoolDownState coolDownState { get; private set; }
 
     [SerializeField]
     private D_IdleState idleStateData;
@@ -23,11 +24,15 @@ public class Monster1 : Entity
     private D_ChooseAttackStyleState chooseAttackStyleStateData;
     [SerializeField]
     private D_MeleeAttackState meleeAttackStateData;
+    [SerializeField]
+    private D_CoolDownState coolDownStateData;
 
     [SerializeField]
     private Transform meleeAttackPosition;
     [SerializeField]
     private Transform playerCheckPosition;
+
+
 
 
     public override void Start()
@@ -40,9 +45,13 @@ public class Monster1 : Entity
         chasePlayerState = new M1_ChasePlayerState(this, stateMachine, "chasePlayer", chasePlayerStateData, this);
         chooseAttackStyleState = new M1_ChooseAttackStyleState(this, stateMachine, "chooseAttackStyle", chooseAttackStyleStateData, this);
         meleeAttackState = new M1_MeleeAttackState(this, stateMachine, "meleeAttack", meleeAttackPosition, meleeAttackStateData, this);
+        coolDownState = new M1_CoolDownState(this, stateMachine, "coolDown", coolDownStateData, this);
+
 
         stateMachine.InitializeState(moveState);
     }
+
+    
 
     public override void OnDrawGizmos()
     {
@@ -51,5 +60,7 @@ public class Monster1 : Entity
         Gizmos.DrawWireSphere(meleeAttackPosition.position, meleeAttackStateData.attackRadius);
 
         Gizmos.DrawWireSphere(playerCheckPosition.position + (Vector3)(aliveGO.transform.right * entityData.attackRange), 0.2f);
+
+        Gizmos.DrawWireSphere(aliveGO.transform.position, entityData.alertRange);
     }
 }

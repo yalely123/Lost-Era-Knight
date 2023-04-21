@@ -8997,6 +8997,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2734362805580218028}
     m_Modifications:
+    - target: {fileID: 7831733298939789836, guid: f30ae83e43c44554d82f133d3aa45721, type: 3}
+      propertyPath: isNeedToFlipAtStart
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7831733298939789837, guid: f30ae83e43c44554d82f133d3aa45721, type: 3}
       propertyPath: m_Name
       value: M2_BeeNoi (2)

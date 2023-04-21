@@ -17,6 +17,7 @@ public class M1_MoveState : MoveState
     {
         base.Enter();
         entity.SetVelocity(stateData.movementSpeed);
+        monster.isAlert = false;
     }
 
     public override void Exit()

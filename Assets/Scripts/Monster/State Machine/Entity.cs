@@ -8,6 +8,7 @@ public class Entity : MonoBehaviour
 
     public D_Entity entityData;
     public int facingDirection { get; private set; } // 1 as facing to right side and -1 mean left side
+    public bool isNeedToFlipAtStart;
 
     private Vector2 velocityWorkSpace; // use when new vector 2 to set velocity
     public Rigidbody2D rb { get; private set; }
@@ -34,6 +35,8 @@ public class Entity : MonoBehaviour
     private float flashDuration = 0.15f;
     private Coroutine flashRoutine;
 
+
+
     public virtual void Start()
     {
         facingDirection = 1;
@@ -42,6 +45,8 @@ public class Entity : MonoBehaviour
         anim = aliveGO.GetComponent<Animator>();
         atsm = aliveGO.GetComponent<AnimationToStatemachine>();
         playerTransform = GameObject.Find("Player").GetComponent<Transform>();
+
+        CheckIfNeedToFlipAtStart();
 
         stateMachine = new FiniteStateMachine();
         isAlert = false;
@@ -143,20 +148,38 @@ public class Entity : MonoBehaviour
     {
         if (playerTransform != null)
         {
-            if (playerTransform.position.x > aliveGO.transform.position.x && facingDirection != 1 && isAlert)
+            //Debug.Log("Player is not null but this isn't work");
+            if (playerTransform.position.x > aliveGO.transform.position.x 
+                && facingDirection != 1 && isAlert)
             {
+               // Debug.Log("return true");
                 return true;
             }
-            else if (playerTransform.position.x < aliveGO.transform.position.x && facingDirection != -1 && isAlert)
+            else if (playerTransform.position.x < aliveGO.transform.position.x 
+                && facingDirection != -1 && isAlert)
             {
+                //Debug.Log("return true");
                 return true;
             }
             else
             {
+                //Debug.Log("return false");
                 return false;
             }
         }
-        else return false;
+        else 
+        {
+            Debug.Log("Can't find player!");
+            return false;
+        }
+    }
+
+    public void CheckIfNeedToFlipAtStart()
+    {
+        if (isNeedToFlipAtStart)
+        {
+            Flip();
+        }
     }
 
     
