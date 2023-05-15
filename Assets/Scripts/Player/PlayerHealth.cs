@@ -43,7 +43,7 @@ public class PlayerHealth : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.H)) // press h to take damage 15 point to test system
         {
-            ReceiveDamage(15, transform.position.x);
+            ReceiveDamage(50, transform.position.x);
         }
         if (Input.GetKeyDown(KeyCode.Backspace))
         {
@@ -66,7 +66,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void ReceiveDamage(float amount, float xPos) // this funciton is for receive damage and calculate how much to decrease health
     {
-        if (!isHitable)
+        if (!isHitable || controller.godModeOn)
         {
             return;
         }

@@ -17,17 +17,23 @@ public class GameManager : MonoBehaviour
     private static GameObject pauseMenu;
 
     [SerializeField]
-    public static Transform player;
+    public static Transform playerTransform;
+    [SerializeField]
+    private GameObject playerPrefab;
+    public static GameObject player;
+    public static Vector2 playerSpawnPos;
 
     private void Start()
     {
+        //GameAi.CreateNewPlayer();
+        //Instantiate(GameManager.player, Vector2.zero, Quaternion.identity);
         isGameStopped = false;
         isGameRunning = true;
         isPlayerReachFinishPortal = false;
         pauseMenu = GameObject.Find("PasuseMenu");
         isGamePaused = false;
         pauseMenu.SetActive(false);
-        player = GameObject.Find("Player").GetComponent<Transform>();
+        playerTransform = GameObject.Find("Player").GetComponent<Transform>();
         //Debug.Log("From Game Manager: ");
         //Debug.Log(player);
     }

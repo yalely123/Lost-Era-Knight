@@ -40,6 +40,7 @@ public static class GameAi
     {
         // Create new player object when player object is deleted by dying
         // find how to update status/info of player in GameAI to new player object
+        GameObject.Instantiate(GameManager.player, Vector2.zero, Quaternion.identity);
     }
 
     public static GameObject[] GenerateMonsterByLevel(string level)

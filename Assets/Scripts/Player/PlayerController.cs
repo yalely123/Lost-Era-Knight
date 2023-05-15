@@ -47,6 +47,8 @@ public class PlayerController : MonoBehaviour
     public Transform wallCheck;
     public LayerMask whatIsGround;
 
+    public bool godModeOn = false;
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -90,8 +92,15 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Backspace)) // for Reposition player to world origin (0,0,0)
         {
-            transform.SetPositionAndRotation(new Vector2(-2, 3), transform.rotation);
-            rb.velocity = new Vector2(0f, -1.0f);
+            if (GameObject.Find("Room Templete"))
+            {
+                transform.SetPositionAndRotation(GameManager.playerSpawnPos, transform.rotation);
+                rb.velocity = new Vector2(0f, -1.0f);
+            }else
+            {
+                transform.SetPositionAndRotation(Vector2.zero, transform.rotation);
+                rb.velocity = new Vector2(0f, -1.0f);
+            }
         }
 
     }

@@ -5,10 +5,9 @@ using UnityEngine;
 public class Room : MonoBehaviour
 {
     public bool istraveled = false;
-    public bool hasTopDoor, hasRightDoor, hasBottomDoor, hasLeftDoor;
+    public bool hasTopDoor, hasRightDoor, hasBottomDoor, hasLeftDoor; // side that room have door and didn't connect with next room yet will be true
     public int gridPosX, gridPosY;
     public int roomType; // 0 is normal room, 1 is start room and 2 is ending room
-    public Dictionary<string, Room> nextRoom;
     //public Transform door;
     [SerializeField]
     private Transform playerTransform;
@@ -20,22 +19,25 @@ public class Room : MonoBehaviour
     {
         if (GameObject.Find("Room Templete").GetComponent<LevelGenerator>() != null)
             levelGen = GameObject.Find("Room Templete").GetComponent<LevelGenerator>();
+        playerSpawnPoint.Find("Player");
         SetBoolDoor();
-        RandomlyConnectRoom();
+        //RandomlyConnectRoom();
     }
 
-    public void BringPlayerToStartPosition()
+    public void BringPlayerToStartPosition() // bring player to player start point of this tile
     {
         if (playerTransform != null)
         {
             playerTransform.position = playerSpawnPoint.position;
-        }else
+            GameManager.playerSpawnPos = playerSpawnPoint.position;
+        }
+        else
         {
             Debug.Log("Player Transform is not found");
         }
     }
 
-    private void SetBoolDoor()
+    public void SetBoolDoor() // read prefab name then set that which door is available
     {
         foreach (char c in gameObject.name)
         {
@@ -56,6 +58,28 @@ public class Room : MonoBehaviour
             {
                 hasLeftDoor = true;
             }
+            
+
+            if (gridPosY + 1 < LevelGenerator.gridSizeY && LevelGenerator.rooms[gridPosX, gridPosY + 1] != null) // check top side
+            {
+                hasTopDoor = false;
+            }
+           
+            if (gridPosX + 1 < LevelGenerator.gridSizeX && LevelGenerator.rooms[gridPosX + 1, gridPosY] != null) // check right side
+            {
+                hasRightDoor = false;
+            }
+            
+            if (gridPosY - 1 >= 0 && LevelGenerator.rooms[gridPosX, gridPosY - 1] != null) // check bottom side
+            {
+                hasBottomDoor = false;
+            }
+            
+            if (gridPosX - 1 >= 0 && LevelGenerator.rooms[gridPosX - 1, gridPosY] != null) // check left side
+            {
+                hasLeftDoor = false;
+            }
+            
         }
     }
 
@@ -70,33 +94,38 @@ public class Room : MonoBehaviour
         playerTransform = player;  
     }
 
-    public void RandomlyConnectRoom()
+    public List<char> getAllConnectableDoor() // return list of shorted character of side that door can connect with new room
     {
-        // TODO: choose room that can connect relate to grid
-        string sideToConnect;
-        if (levelGen != null && levelGen.amountRoom > 0)
+        List<char> temp = new List<char>();
+        if (hasTopDoor)
         {
-            if (hasTopDoor)
-            {
-                sideToConnect = "top";
-                levelGen.RandomNextTile(this, sideToConnect);
-            }
-            if (hasRightDoor)
-            {
-                sideToConnect = "right";
-                levelGen.RandomNextTile(this, sideToConnect);
-            }
-            if (hasBottomDoor)
-            {
-                sideToConnect = "bottom";
-                levelGen.RandomNextTile(this, sideToConnect);
-            }
-            if (hasLeftDoor)
-            {
-                sideToConnect = "left";
-                levelGen.RandomNextTile(this, sideToConnect);
-            }
+            temp.Add('T');
+            //Debug.Log("has top door");
         }
+        if (hasRightDoor)
+        {
+            temp.Add('R');
+            //Debug.Log("has right door");
+        }
+        if (hasBottomDoor)
+        {
+            temp.Add('B');
+            //Debug.Log("has bottom door");
+        }
+        if (hasLeftDoor)
+        {
+            temp.Add('L');
+            //Debug.Log("has left door");
+        }
+        return temp;
+    }
+
+    public void LogAllRoomData()
+    {
+        string s = string.Format("Game Object Name = {9}\nisTraveled = {0}\nhasDoor: top = {1}, right = {2}, bottom = {3}, left = {4}" +
+            "\nPositin in Grid: x = {5}, Y = {6}\n player transform position = {7}\n player spawn point position = {8}",
+            istraveled, hasTopDoor, hasRightDoor, hasBottomDoor, hasLeftDoor, gridPosX, gridPosY, playerTransform.position, playerSpawnPoint.position, name);
+        Debug.Log(s);
     }
 
 }

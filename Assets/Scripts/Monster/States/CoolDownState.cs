@@ -16,7 +16,7 @@ public class CoolDownState : State
     public override void Enter()
     {
         base.Enter();
-        Debug.Log("Moving Stop!");
+        //Debug.Log("Moving Stop!");
         entity.SetVelocity(0f);
         isFinishCoolDown = false;
     }
