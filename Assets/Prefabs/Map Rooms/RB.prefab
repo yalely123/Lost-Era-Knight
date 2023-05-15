@@ -8804,6 +8804,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   playerSpawnPoint: {fileID: 6437715124491809083}
   levelGen: {fileID: 0}
+  finishPortal: {fileID: 8621496712690230416, guid: 5dff04443eed16f4086f3fc6bb69fa9a, type: 3}
 --- !u!1001 &2577792709257974096
 PrefabInstance:
   m_ObjectHideFlags: 0

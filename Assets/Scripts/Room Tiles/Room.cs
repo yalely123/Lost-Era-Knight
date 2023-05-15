@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Room : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class Room : MonoBehaviour
     private Transform playerTransform;
     public Transform playerSpawnPoint;
     public LevelGenerator levelGen;
+    public GameObject finishPortal;
 
 
     private void Start()
@@ -21,7 +23,7 @@ public class Room : MonoBehaviour
             levelGen = GameObject.Find("Room Templete").GetComponent<LevelGenerator>();
         playerSpawnPoint.Find("Player");
         SetBoolDoor();
-        //RandomlyConnectRoom();
+        
     }
 
     public void BringPlayerToStartPosition() // bring player to player start point of this tile
@@ -34,6 +36,19 @@ public class Room : MonoBehaviour
         else
         {
             Debug.Log("Player Transform is not found");
+        }
+    }
+
+    public void SpawnFinishPortal()
+    {
+        // spawn finish portal in finishroom
+        if (finishPortal != null)
+        {
+            GameObject portal = Instantiate(finishPortal, playerSpawnPoint.position, Quaternion.identity);
+            portal.transform.parent = transform;
+        }else
+        {
+            throw new Exception("Portal GameObject is not Found!");
         }
     }
 

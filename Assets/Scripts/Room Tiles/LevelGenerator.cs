@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+
 public class LevelGenerator : MonoBehaviour
 {
     public bool isRandomMaxAmountRoom;
@@ -106,7 +107,11 @@ public class LevelGenerator : MonoBehaviour
             roomConnectQ.Enqueue(rooms[gridPosX, gridPosY]);
         }
 
-        else { Debug.Log(string.Format("Something went wrong: room array in this position({0}, {1}) already has room before adding in array", gridPosX, gridPosY)); }
+        else 
+        { 
+            throw new System.ArgumentException((string.
+                Format("Something went wrong: room array in this position({0}, {1}) already has room before adding in array", gridPosX, gridPosY))); 
+        }
     }
 
 
@@ -192,13 +197,25 @@ public class LevelGenerator : MonoBehaviour
         if (posX - 1 >= 0 && rooms[posX-1, posY] != null) // checking left side of this room
         {
             Room sideRoom = rooms[posX - 1, posY];
+            List<GameObject> temp = new List<GameObject>();
             if (sideRoom.hasRightDoor)
             {
                 // this room must have left door
-                List<GameObject> temp = new List<GameObject>();
                 foreach (GameObject tile in randomTileSet)
                 {
                     if (leftDoorRoomPrefab.Contains(tile))
+                    {
+                        temp.Add(tile);
+                    }
+                }
+                randomTileSet = temp;
+            }
+            else
+            {
+                // this room mustn't have left door (filter all possible left door)
+                foreach (GameObject tile in randomTileSet)
+                {
+                    if (!leftDoorRoomPrefab.Contains(tile))
                     {
                         temp.Add(tile);
                     }
@@ -209,13 +226,25 @@ public class LevelGenerator : MonoBehaviour
         if (posY + 1 < gridSizeY && rooms[posX, posY + 1] != null) // checking top side of this room
         {
             Room sideRoom = rooms[posX, posY + 1];
+            List<GameObject> temp = new List<GameObject>();
             if (sideRoom.hasBottomDoor)
             {
                 // this room must have top door
-                List<GameObject> temp = new List<GameObject>();
                 foreach (GameObject tile in randomTileSet)
                 {
                     if (topDoorRoomPrefab.Contains(tile))
+                    {
+                        temp.Add(tile);
+                    }
+                }
+                randomTileSet = temp;
+            }
+            else
+            {
+                // this room mustn't have top door (filter all possible top door)
+                foreach (GameObject tile in randomTileSet)
+                {
+                    if (!topDoorRoomPrefab.Contains(tile))
                     {
                         temp.Add(tile);
                     }
@@ -226,13 +255,25 @@ public class LevelGenerator : MonoBehaviour
         if (posX + 1 < gridSizeX && rooms[posX + 1, posY] != null) // checking right side of this room
         {
             Room sideRoom = rooms[posX + 1, posY];
+            List<GameObject> temp = new List<GameObject>();
             if (sideRoom.hasLeftDoor)
             {
                 // this room must have right door
-                List<GameObject> temp = new List<GameObject>();
                 foreach (GameObject tile in randomTileSet)
                 {
                     if (rightDoorRoomPrefab.Contains(tile))
+                    {
+                        temp.Add(tile);
+                    }
+                }
+                randomTileSet = temp;
+            }
+            else
+            {
+                // this room mustn't have right door (filter all possible right door)
+                foreach (GameObject tile in randomTileSet)
+                {
+                    if (!rightDoorRoomPrefab.Contains(tile))
                     {
                         temp.Add(tile);
                     }
@@ -243,13 +284,25 @@ public class LevelGenerator : MonoBehaviour
         if (posY - 1 >= 0 && rooms[posX, posY - 1] != null) // checking bottom side of this room
         {
             Room sideRoom = rooms[posX, posY - 1];
+            List<GameObject> temp = new List<GameObject>();
             if (sideRoom.hasTopDoor)
             {
                 // this room must have bottom door
-                List<GameObject> temp = new List<GameObject>();
                 foreach (GameObject tile in randomTileSet)
                 {
                     if (bottomDoorRoomPrefab.Contains(tile))
+                    {
+                        temp.Add(tile);
+                    }
+                }
+                randomTileSet = temp;
+            }
+            else 
+            {
+                // this room mustn't have bottom door (filter all possible bottom door)
+                foreach (GameObject tile in randomTileSet)
+                {
+                    if (!bottomDoorRoomPrefab.Contains(tile))
                     {
                         temp.Add(tile);
                     }
@@ -286,6 +339,8 @@ public class LevelGenerator : MonoBehaviour
             //Debug.Log("going to log current room data");
             startRoom.LogAllRoomData();
             roomConnectQ.Enqueue(startRoom);
+            currentRoom = startRoom;
+            rooms[currentRoom.gridPosX, currentRoom.gridPosY].SetBoolDoor();
 
             string currentQ = "";
             foreach (Room r in roomConnectQ)
@@ -300,8 +355,9 @@ public class LevelGenerator : MonoBehaviour
             while (roomConnectQ.Count > 0)
             {
                 Debug.Log("Room number: " + (i +2));
+                currentRoom = roomConnectQ.Peek(); // peek method returns what queue will dequeue next
+                rooms[currentRoom.gridPosX, currentRoom.gridPosY].SetBoolDoor();
 
-               currentRoom = roomConnectQ.Peek(); // peek method returns what queue will dequeue next
                 Debug.Log("Now current room name: " + currentRoom.name);
                 //Debug.Log("Current Room name = " + currentRoom.name);
                 // random that which door is open we will go for it
@@ -370,6 +426,7 @@ public class LevelGenerator : MonoBehaviour
             
             
             }
+            currentRoom.SpawnFinishPortal();
 
             LogRoomsArray();
             

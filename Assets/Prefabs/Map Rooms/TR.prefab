@@ -293,6 +293,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   playerSpawnPoint: {fileID: 2438665356867019821}
   levelGen: {fileID: 0}
+  finishPortal: {fileID: 8621496712690230416, guid: 5dff04443eed16f4086f3fc6bb69fa9a, type: 3}
 --- !u!1 &5566639707883848562
 GameObject:
   m_ObjectHideFlags: 0

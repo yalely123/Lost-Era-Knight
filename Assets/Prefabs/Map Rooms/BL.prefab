@@ -9776,6 +9776,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   playerSpawnPoint: {fileID: 6293026431171311570}
   levelGen: {fileID: 0}
+  finishPortal: {fileID: 8621496712690230416, guid: 5dff04443eed16f4086f3fc6bb69fa9a, type: 3}
 --- !u!1 &8203048038428658857
 GameObject:
   m_ObjectHideFlags: 0
@@ -10072,11 +10073,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7831733298939789839, guid: f30ae83e43c44554d82f133d3aa45721, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 21.8
+      value: 3.4
       objectReference: {fileID: 0}
     - target: {fileID: 7831733298939789839, guid: f30ae83e43c44554d82f133d3aa45721, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 20.5
+      value: 21.4
       objectReference: {fileID: 0}
     - target: {fileID: 7831733298939789839, guid: f30ae83e43c44554d82f133d3aa45721, type: 3}
       propertyPath: m_LocalPosition.z
