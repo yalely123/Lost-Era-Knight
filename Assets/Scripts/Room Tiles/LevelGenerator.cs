@@ -17,11 +17,13 @@ public class LevelGenerator : MonoBehaviour
     
     public static Room[,] rooms; // array that contain all room
     public Room startRoom;
+    public Room finishRoom;
 
     public GameObject fakeRoom,
                       nextTile;
 
     private Queue<Room> roomConnectQ;
+    private List<Room> randSetOfFinishRoom;
 
     [SerializeField]
     private Room currentRoom;
@@ -31,6 +33,7 @@ public class LevelGenerator : MonoBehaviour
                         rightDoorRoomPrefab,
                         bottomDoorRoomPrefab,
                         leftDoorRoomPrefab;
+    public GameObject wallRoom;
     [SerializeField]
     private Transform player;
 
@@ -38,13 +41,14 @@ public class LevelGenerator : MonoBehaviour
     {
         if (isRandomMaxAmountRoom)
         {
-            maxAmountRoom = Random.Range(3, 20);
+            maxAmountRoom = Random.Range(3, 8);
         }
         amountRoom = maxAmountRoom;
         player = GameObject.Find("Player").GetComponent<Transform>();
         rooms = new Room[gridSizeX, gridSizeY];
         //amountRoom = GameAi.maxRooms;
         roomConnectQ = new Queue<Room>();
+        randSetOfFinishRoom = new List<Room>();
         GenerateNewLevel();
     }
 
@@ -105,6 +109,13 @@ public class LevelGenerator : MonoBehaviour
             rooms[gridPosX, gridPosY].SetBoolDoor();
             rooms[gridPosX, gridPosY].LogAllRoomData();
             roomConnectQ.Enqueue(rooms[gridPosX, gridPosY]);
+            amountRoom--;
+
+            // for adding to set that we will random to be the finish room
+            if (rooms[gridPosX, gridPosY].getName().Length == 1 && rooms[gridPosX, gridPosY] != startRoom)
+            {
+                randSetOfFinishRoom.Add(rooms[gridPosX, gridPosY]);
+            }
         }
 
         else 
@@ -166,33 +177,7 @@ public class LevelGenerator : MonoBehaviour
             }
         }
 
-        // 2. filter by fromSide that need to connect
-        /*
-        List<GameObject> listForFilter = new List<GameObject>();
-        if (fromSide == "T") // must have bottom door
-        {
-            listForFilter = bottomDoorRoomPrefab.ToList();
-        }else if (fromSide == "R") // must have left door
-        {
-            listForFilter = leftDoorRoomPrefab.ToList();
-        }else if (fromSide == "B") // must have top door
-        {
-            listForFilter = topDoorRoomPrefab.ToList();
-        }else if (fromSide == "L") // must have right door
-        {
-            listForFilter = rightDoorRoomPrefab.ToList();
-            
-        }
-        for (int i = 0; i < randomTileSet.Count; i++)
-        {
-            if (!listForFilter.Contains(randomTileSet[i]))
-            {
-                randomTileSet.Remove(randomTileSet[i]);
-            }
-        }
-        */
-
-        // 3. filter room that can connect if there are room before from other side of room that is connected
+        // 2. filter room that can connect if there are room before from other side of room that is connected
 
         if (posX - 1 >= 0 && rooms[posX-1, posY] != null) // checking left side of this room
         {
@@ -326,12 +311,52 @@ public class LevelGenerator : MonoBehaviour
 
     }
 
+    public void CloseAllOpenDoorAfterGeneratingMap() // close all door of room that now in queue but we generate map reach score or amount of room already
+    {
+        while(roomConnectQ.Count > 0)
+        {
+            currentRoom = roomConnectQ.Dequeue();
+            currentRoom.SetBoolDoor();
+            bool isClosed =  false;
+            GameObject wall;
+            if (currentRoom.hasTopDoor)
+            {
+                wall = Instantiate(wallRoom, new Vector2(currentRoom.gridPosX * UNITSCALE, (currentRoom.gridPosY + 1) * UNITSCALE), Quaternion.identity);
+                wall.transform.parent = wholeMap.transform;
+                isClosed = true;
+            }
+            if (currentRoom.hasRightDoor)
+            {
+                wall = Instantiate(wallRoom, new Vector2((currentRoom.gridPosX + 1) * UNITSCALE, currentRoom.gridPosY * UNITSCALE), Quaternion.identity);
+                wall.transform.parent = wholeMap.transform;
+                isClosed = true;
+            }
+            if (currentRoom.hasLeftDoor)
+            {
+                wall = Instantiate(wallRoom, new Vector2((currentRoom.gridPosX - 1) * UNITSCALE, currentRoom.gridPosY * UNITSCALE), Quaternion.identity);
+                wall.transform.parent = wholeMap.transform;
+                isClosed = true;
+            }
+            if (currentRoom.hasBottomDoor)
+            {
+                wall = Instantiate(wallRoom, new Vector2(currentRoom.gridPosX * UNITSCALE, (currentRoom.gridPosY - 1) * UNITSCALE), Quaternion.identity);
+                wall.transform.parent = wholeMap.transform;
+                isClosed = true;
+            }
+
+            if (isClosed)
+            {
+                randSetOfFinishRoom.Add(currentRoom);
+            }
+
+        }
+    }
+
     public void GenerateNewLevel()
     {
         if (amountRoom != maxAmountRoom)
         {
-            Debug.Log("At start: Max amount rooms != amount room or something went wrong before start generating level");
-
+            throw new System.ArgumentException("At start: Max amount rooms != amount room or something went wrong before start generating level");
         } else
         {
             Debug.Log("Room number: 1");
@@ -352,7 +377,7 @@ public class LevelGenerator : MonoBehaviour
 
             int i = 0;
             //while (roomConnectQ.Count > 0 && i < 4)
-            while (roomConnectQ.Count > 0)
+            while (roomConnectQ.Count > 0 && amountRoom > 0)
             {
                 Debug.Log("Room number: " + (i +2));
                 currentRoom = roomConnectQ.Peek(); // peek method returns what queue will dequeue next
@@ -426,12 +451,14 @@ public class LevelGenerator : MonoBehaviour
             
             
             }
-            currentRoom.SpawnFinishPortal();
+
+            CloseAllOpenDoorAfterGeneratingMap();
+            int temp = Random.Range(0, randSetOfFinishRoom.Count - 1);
+            randSetOfFinishRoom[temp].SpawnFinishPortal();
+            finishRoom = randSetOfFinishRoom[temp];
 
             LogRoomsArray();
             
-            // TODO: 1. check that there will be any door that not connect with room
-            //       2. fix to make it complete
         }
 
     }

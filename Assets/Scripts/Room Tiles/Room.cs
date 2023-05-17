@@ -135,6 +135,20 @@ public class Room : MonoBehaviour
         return temp;
     }
 
+    public string getName()
+    {
+        string temp = "";
+
+        foreach(char s in name)
+        {
+            if (s == 'T' || s == 'R' || s == 'B' || s == 'L')
+            {
+                temp += s;
+            }
+        }
+        return temp;
+    }
+
     public void LogAllRoomData()
     {
         string s = string.Format("Game Object Name = {9}\nisTraveled = {0}\nhasDoor: top = {1}, right = {2}, bottom = {3}, left = {4}" +
