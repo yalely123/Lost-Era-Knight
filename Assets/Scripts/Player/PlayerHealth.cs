@@ -33,6 +33,7 @@ public class PlayerHealth : MonoBehaviour
         flashRoutine = null;
         healthBar = GameObject.Find("Health Bar").GetComponent<HealthBar>();
         healthBar.SetMaxHealth(maxHealth);
+        GameAi.healthRemain = (int)health;
     }
     void Update()
     {
@@ -61,7 +62,7 @@ public class PlayerHealth : MonoBehaviour
         }
         GameAi.deadCount += 1;
         Destroy(gameObject); // Destroy player object (player is dead, shouldn't show on sceen)
-        GameAi.LoadGameOverScene();
+        GameManager.LoadGameOverScene();
     }
 
     public void ReceiveDamage(float amount, float xPos) // this funciton is for receive damage and calculate how much to decrease health
@@ -77,6 +78,7 @@ public class PlayerHealth : MonoBehaviour
         }else
         {
             health -= amount;
+            GameAi.healthRemain = (int)health;
             controller.isHit = true;
             controller.attackXPos = xPos;
 

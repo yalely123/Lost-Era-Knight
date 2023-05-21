@@ -6,6 +6,7 @@ using System.Linq;
 
 public class LevelGenerator : MonoBehaviour
 {
+    public static bool isFinishGenerating;
     public bool isRandomMaxAmountRoom;
     public static int gridSizeX = 7, gridSizeY = 5;
     public int UNITSCALE = 53; // mean that if we spawn room at (0,0) next right room will spawn (53, 0)
@@ -39,17 +40,24 @@ public class LevelGenerator : MonoBehaviour
 
     private void Start()
     {
+        isFinishGenerating = false;
         if (isRandomMaxAmountRoom)
         {
             maxAmountRoom = Random.Range(3, 8);
         }
         amountRoom = maxAmountRoom;
         player = GameObject.Find("Player").GetComponent<Transform>();
+        if (player == null)
+        {
+            throw new System.ArgumentException("Cannot find player gameobject");
+        }
         rooms = new Room[gridSizeX, gridSizeY];
         //amountRoom = GameAi.maxRooms;
         roomConnectQ = new Queue<Room>();
         randSetOfFinishRoom = new List<Room>();
         GenerateNewLevel();
+        isFinishGenerating = true;
+        //CreateStartRoom();
     }
 
     private void Update()
@@ -457,6 +465,7 @@ public class LevelGenerator : MonoBehaviour
             randSetOfFinishRoom[temp].SpawnFinishPortal();
             finishRoom = randSetOfFinishRoom[temp];
 
+            
             LogRoomsArray();
             
         }

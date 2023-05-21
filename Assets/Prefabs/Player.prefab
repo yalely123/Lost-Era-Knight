@@ -340,6 +340,7 @@ MonoBehaviour:
   whatIsGround:
     serializedVersion: 2
     m_Bits: 256
+  godModeOn: 1
 --- !u!114 &3965803733216929751
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,33 +8,25 @@ public static class GameAi
     // this class control overall workflow of the game
     // to make that use public static to make this class global
     public static int monsterKillCount = 0,
-                      deadCount = 0,
-                      getHitCount = 0,
-                      maxRooms = 10;
+                      healthRemain,
+                      deadCount,
+                      victoryCount = 0;
+    
+    public static float levelStartTime, levelFinishTime;
+    
+    public static bool isVictory;
 
-    public static float levelScore;
+    public static float levelScore = 9999;
 
     public static Vector2 playerDeadPostion;
     
-    public static GameObject[] monsterPrefab; // contain all monster prefab of project for monster generating
-                                              // future problem: referencing which is only can acces by index of array. not something specific like name of monter
-    public static GameObject[] monsterLeft = { }; // contain all monster that still on current level in game hierachy and generating queue
+    
 
     public static void LogMonsterKillCount()
     {
         Debug.Log(monsterKillCount);
     }
 
-    public static void KillAllMonsters()
-    {
-        Debug.Log("All monsters are deleted!");
-        monsterLeft = GameObject.FindGameObjectsWithTag("Monster");
-        int index = monsterLeft.Length - 1;
-        Debug.Log(index);
-        for (; index >= 0; index--) { 
-            Object.Destroy(monsterLeft[index]);
-        }
-    }
 
     public static void CreateNewPlayer()
     {
@@ -63,32 +55,13 @@ public static class GameAi
         // for generating monster in next play round of player
     }
 
-    public static void spawnMonster(float posX, float posY, int monNum = -1)
-    {
-        // monNum = -1 mean that spawn a random monster
-        // otherwise mean that spawn monster by monster prefab's index
-        int monsterPrefabIndex;
-        Vector2 spawnPos = new Vector2(posX, posY);
-        if (monNum == -1)
-        {
-            monsterPrefabIndex = Random.Range(0, monsterPrefab.Length);
-        } else
-        {
-            monsterPrefabIndex = monNum;
-        }
-        Object.Instantiate(monsterPrefab[monsterPrefabIndex], spawnPos, Quaternion.identity);
-        
-    }
-
     public static int getNumberOfMonsterInMap()
     {
-        return monsterLeft.Length;
+        return -1;
     }
-    
-    public static void LoadGameOverScene()
+
+    public static void ResetDataForNewRun()
     {
-        // TODO: Load Game Over Scene
-        Debug.Log("Go to Game Over Scene");
-        SceneManager.LoadScene("Game Over");
+        monsterKillCount = 0;
     }
 }

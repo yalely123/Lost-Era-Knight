@@ -15,16 +15,15 @@ public class GameAiDataVitualizer : MonoBehaviour
 
     void Start()
     {
-        GameAi.monsterPrefab = monsterPrefab;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         monsterKillCount = GameAi.monsterKillCount;
-        deadCount = GameAi.deadCount;
-        getHitCount = GameAi.getHitCount;
         playerDeadPosition = GameAi.playerDeadPostion;
         monsterLeft = GameAi.getNumberOfMonsterInMap();
+
     }
 }

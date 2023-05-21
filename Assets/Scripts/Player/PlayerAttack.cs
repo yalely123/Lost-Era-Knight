@@ -43,6 +43,14 @@ public class PlayerAttack : MonoBehaviour
 
     }
 
+    private void FixedUpdate()
+    {
+        if (isAttacking && !isAttackHit)
+        {
+            CheckAttackHit();
+        }
+    }
+
     private void CheckAttackDirectionInput()
     {
         if (Input.GetKey(KeyCode.UpArrow))
@@ -70,10 +78,12 @@ public class PlayerAttack : MonoBehaviour
         if (side == "default")
         {
             anim.SetBool("isAttacking", isAttacking);
+            /*
             if (!isAttackHit)
             { 
                 CheckAttackHit();
             }
+            */
         }
     }
 
@@ -108,7 +118,7 @@ public class PlayerAttack : MonoBehaviour
     public void FinishAttack()
     {
         isAttacking = false;
-        canMeleeHit = true;
+        canMeleeHit = false; //
         isAttackHit = false;
         anim.SetBool("isAttacking", isAttacking);
     }

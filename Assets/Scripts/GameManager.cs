@@ -11,17 +11,38 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private bool isGameStopped;
-    private bool needToOpenPauseMenu;
 
     [SerializeField]
     private static GameObject pauseMenu;
 
+    [SerializeField]
+    private GameObject dataVisualizer;
+    private bool isDataShown;
+
+    [SerializeField]
+    private LevelGenerator levelGen;
     [SerializeField]
     public static Transform playerTransform;
     [SerializeField]
     private GameObject playerPrefab;
     public static GameObject player;
     public static Vector2 playerSpawnPos;
+
+    // tracking and collecting data from player
+    public static Room curRoom; // room that player in now in
+    [SerializeField]
+    private Room forViewCurRoom;
+    public static bool isDoorShouldBeClosed;
+
+
+    private void Awake()
+    {
+        playerTransform = GameObject.Find("Player").GetComponent<Transform>();
+        if (playerTransform == null)
+        {
+            throw new System.ArgumentException("Cannot find player transform");
+        }
+    }
 
     private void Start()
     {
@@ -33,15 +54,33 @@ public class GameManager : MonoBehaviour
         pauseMenu = GameObject.Find("PasuseMenu");
         isGamePaused = false;
         pauseMenu.SetActive(false);
-        playerTransform = GameObject.Find("Player").GetComponent<Transform>();
+        curRoom = forViewCurRoom;
+        
         //Debug.Log("From Game Manager: ");
         //Debug.Log(player);
+        isDataShown = false;
+        dataVisualizer.SetActive(false);
+        GameAi.ResetDataForNewRun();
+
+        isDoorShouldBeClosed = true;
     }
 
     private void Update()
     {
         CheckKeyBoardInput();
         CheckIfPlayerReachFinishPortal();
+        CheckIfDoorNeedToClose();
+        forViewCurRoom = curRoom;
+        if (LevelGenerator.isFinishGenerating && curRoom != null) 
+        { 
+            if (Input.GetKey(KeyCode.M))
+            {
+                if (curRoom != null)
+                {
+                    curRoom.KillAllMonsterInRoom();
+                }
+            }
+        }
     }
 
     private void CheckKeyBoardInput ()
@@ -69,6 +108,25 @@ public class GameManager : MonoBehaviour
             }
             
         }
+
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            isDataShown = !isDataShown;
+            dataVisualizer.SetActive(isDataShown);
+        }
+    }
+
+    private void CheckIfDoorNeedToClose() // this will close all map tile door when player start play on that tile and open when that tile is cleared
+    {
+        if (curRoom.isRoomCleared)
+        {
+            isDoorShouldBeClosed = false;
+        }
+
+        if (!curRoom.isRoomCleared)
+        {
+            isDoorShouldBeClosed = true;
+        }
     }
 
 
@@ -82,9 +140,25 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 1;
         }
         Debug.Log("Game is forced to be END play through by Game Manager!");
-        SceneManager.LoadScene("Victory");
         isGameStopped = true;
         isGameRunning = false;
+
+        if (levelGen.finishRoom.isTimeStart)
+        {
+            levelGen.finishRoom.clearTime = Time.time;
+            levelGen.finishRoom.isTimeStart = false;
+            levelGen.finishRoom.playTime = levelGen.finishRoom.startTime - levelGen.finishRoom.clearTime;
+        }
+        
+        SceneManager.LoadScene("Victory");
+    }
+
+    public static void LoadGameOverScene()
+    {
+        isGameRunning = false;
+        isGamePaused = true;
+        Debug.Log("Go to Game Over Scene");
+        SceneManager.LoadScene("Game Over");
     }
 
     public static void SetGameBeforeStart()
@@ -121,5 +195,7 @@ public class GameManager : MonoBehaviour
         pauseMenu.SetActive(false);
         Time.timeScale = 1;
     }
+
+
 
 }

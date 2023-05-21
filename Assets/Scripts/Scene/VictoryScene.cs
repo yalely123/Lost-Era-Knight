@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class VictoryScene : MonoBehaviour
 {
-    private float inputCoolDownDuration;
+    public float inputCoolDownDuration;
     private float timeEnterScene;
 
     private void Start()
