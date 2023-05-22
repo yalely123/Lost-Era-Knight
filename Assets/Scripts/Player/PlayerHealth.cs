@@ -78,7 +78,8 @@ public class PlayerHealth : MonoBehaviour
         }else
         {
             health -= amount;
-            GameAi.healthRemain = (int)health;
+            if (health < 0) { GameAi.healthRemain = 0; }
+            else { GameAi.healthRemain = (int)health; }
             controller.isHit = true;
             controller.attackXPos = xPos;
 

@@ -71,8 +71,8 @@ public class LevelGenerator : MonoBehaviour
 
     public void CreateStartRoom()
     {
-        int randSpawnX = Random.Range(0, gridSizeX-1); // create random x and y position for position of starting room
-        int randSpawnY = Random.Range(0, gridSizeY-1);
+        int randSpawnX = Random.Range(0, gridSizeX); // create random x and y position for position of starting room
+        int randSpawnY = Random.Range(0, gridSizeY);
         List<GameObject> randSet = GetRandomPrefabSet(randSpawnX, randSpawnY);
         int randIndex = Random.Range(0, randSet.Count-1);
         GameObject newRoomTile = Instantiate(randSet[randIndex], new Vector2(randSpawnX * UNITSCALE, randSpawnY * UNITSCALE), Quaternion.identity); // instantiate tile that's randomed to random position
@@ -331,28 +331,41 @@ public class LevelGenerator : MonoBehaviour
             {
                 wall = Instantiate(wallRoom, new Vector2(currentRoom.gridPosX * UNITSCALE, (currentRoom.gridPosY + 1) * UNITSCALE), Quaternion.identity);
                 wall.transform.parent = wholeMap.transform;
+                EmptyRoom empRoom = wall.GetComponent<EmptyRoom>();
+                empRoom.gridPosX = currentRoom.gridPosX; empRoom.gridPosY = currentRoom.gridPosY + 1;
+                rooms[currentRoom.gridPosX, currentRoom.gridPosY + 1] = empRoom;
                 isClosed = true;
+
             }
             if (currentRoom.hasRightDoor)
             {
                 wall = Instantiate(wallRoom, new Vector2((currentRoom.gridPosX + 1) * UNITSCALE, currentRoom.gridPosY * UNITSCALE), Quaternion.identity);
                 wall.transform.parent = wholeMap.transform;
+                EmptyRoom empRoom = wall.GetComponent<EmptyRoom>();
+                empRoom.gridPosX = currentRoom.gridPosX + 1; empRoom.gridPosY = currentRoom.gridPosY;
+                rooms[currentRoom.gridPosX + 1, currentRoom.gridPosY] = empRoom;
                 isClosed = true;
             }
             if (currentRoom.hasLeftDoor)
             {
                 wall = Instantiate(wallRoom, new Vector2((currentRoom.gridPosX - 1) * UNITSCALE, currentRoom.gridPosY * UNITSCALE), Quaternion.identity);
                 wall.transform.parent = wholeMap.transform;
+                EmptyRoom empRoom = wall.GetComponent<EmptyRoom>();
+                empRoom.gridPosX = currentRoom.gridPosX - 1; empRoom.gridPosY = currentRoom.gridPosY;
+                rooms[currentRoom.gridPosX - 1, currentRoom.gridPosY] = empRoom;
                 isClosed = true;
             }
             if (currentRoom.hasBottomDoor)
             {
                 wall = Instantiate(wallRoom, new Vector2(currentRoom.gridPosX * UNITSCALE, (currentRoom.gridPosY - 1) * UNITSCALE), Quaternion.identity);
                 wall.transform.parent = wholeMap.transform;
+                EmptyRoom empRoom = wall.GetComponent<EmptyRoom>();
+                empRoom.gridPosX = currentRoom.gridPosX; empRoom.gridPosY = currentRoom.gridPosY - 1;
+                rooms[currentRoom.gridPosX, currentRoom.gridPosY - 1] = empRoom; 
                 isClosed = true;
             }
 
-            if (isClosed)
+            if (isClosed) // mean that thi room is edge room so we can set this room to be a finish room which will be randomed next step
             {
                 randSetOfFinishRoom.Add(currentRoom);
             }

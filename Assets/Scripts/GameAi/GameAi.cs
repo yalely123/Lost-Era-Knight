@@ -18,7 +18,7 @@ public static class GameAi
 
     public static float levelScore = 9999;
 
-    public static Vector2 playerDeadPostion;
+    public static List<Room> playerRoute = new List<Room>();
     
     
 
@@ -55,13 +55,9 @@ public static class GameAi
         // for generating monster in next play round of player
     }
 
-    public static int getNumberOfMonsterInMap()
-    {
-        return -1;
-    }
-
     public static void ResetDataForNewRun()
     {
         monsterKillCount = 0;
+        playerRoute.Clear();
     }
 }

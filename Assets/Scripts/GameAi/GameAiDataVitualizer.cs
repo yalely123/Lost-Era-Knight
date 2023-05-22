@@ -8,7 +8,6 @@ public class GameAiDataVitualizer : MonoBehaviour
     [SerializeField] private int monsterKillCount;
     [SerializeField] private int deadCount;
     [SerializeField] private int getHitCount;
-    [SerializeField] private Vector2 playerDeadPosition;
 
     public GameObject[] monsterPrefab;
     [SerializeField] private int monsterLeft;
@@ -22,8 +21,6 @@ public class GameAiDataVitualizer : MonoBehaviour
     void Update()
     {
         monsterKillCount = GameAi.monsterKillCount;
-        playerDeadPosition = GameAi.playerDeadPostion;
-        monsterLeft = GameAi.getNumberOfMonsterInMap();
 
     }
 }

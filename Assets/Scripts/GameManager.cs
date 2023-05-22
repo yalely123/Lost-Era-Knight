@@ -33,6 +33,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Room forViewCurRoom;
     public static bool isDoorShouldBeClosed;
+    //private static bool isAddedToRoute = false;
 
 
     private void Awake()
@@ -70,17 +71,9 @@ public class GameManager : MonoBehaviour
         CheckKeyBoardInput();
         CheckIfPlayerReachFinishPortal();
         CheckIfDoorNeedToClose();
+
         forViewCurRoom = curRoom;
-        if (LevelGenerator.isFinishGenerating && curRoom != null) 
-        { 
-            if (Input.GetKey(KeyCode.M))
-            {
-                if (curRoom != null)
-                {
-                    curRoom.KillAllMonsterInRoom();
-                }
-            }
-        }
+        
     }
 
     private void CheckKeyBoardInput ()
@@ -114,6 +107,28 @@ public class GameManager : MonoBehaviour
             isDataShown = !isDataShown;
             dataVisualizer.SetActive(isDataShown);
         }
+
+        if (LevelGenerator.isFinishGenerating && curRoom != null)
+        {
+            if (Input.GetKey(KeyCode.D) && Input.GetKey(KeyCode.A))
+            {
+                if (curRoom != null)
+                {
+                    curRoom.KillAllMonsterInRoom();
+                }
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            string s = "";
+            foreach (Room r in GameAi.playerRoute)
+            {
+                s += r.name;
+                s += ", ";
+            }
+            Debug.Log(s);
+        }
     }
 
     private void CheckIfDoorNeedToClose() // this will close all map tile door when player start play on that tile and open when that tile is cleared
@@ -130,10 +145,22 @@ public class GameManager : MonoBehaviour
     }
 
 
+    public static void SetCurrentRoom(Room r)
+    {
+        curRoom = r;
+        //Debug.Log("In Set Current Room function isTimeStart = " + curRoom.isTimeStart);
+        if (curRoom.isTimeStart && !curRoom.isAddedToRoute)
+        {
+            GameAi.playerRoute.Add(curRoom);
+            curRoom.isAddedToRoute = true;
+            Debug.Log("Trying to add room in player route, route member: " + GameAi.playerRoute.Count);
+        }
+
+    }
+
     private void ForcedEndGamePlay() 
     {
         // Forced End the current game play this is for Debugging mode
-        // TODO: change scene to try again scene
 
         if (Time.timeScale == 0)
         {

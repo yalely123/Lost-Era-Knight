@@ -9,12 +9,14 @@ public class Room : MonoBehaviour
     public bool isPlayerInThisRoom = false,
                 isDoorSpawned = false,
                 isMessageSent = false,
-                isRoomCleared = false;
-    //public static bool isDoorAlreadyClose = true, isDoorAlreadyOpen = false;
+                isRoomCleared = false,
+                isAddedToRoute = false;
 
+    
     private int UNITESCALE = (53/2);
-    public bool hasTopDoor, hasRightDoor, hasBottomDoor, hasLeftDoor; // side that room have door and didn't connect with next room yet will be true
     public int gridPosX, gridPosY;
+    public bool hasTopDoor, hasRightDoor, hasBottomDoor, hasLeftDoor; // side that room have door and didn't connect with next room yet will be true
+
     public float startTime, clearTime, playTime;
     public bool isTimeStart = false;
 
@@ -29,7 +31,7 @@ public class Room : MonoBehaviour
 
 
 
-    private void Start()
+    protected virtual void Start()
     {
         if (GameObject.Find("Room Templete").GetComponent<LevelGenerator>() != null)
             levelGen = GameObject.Find("Room Templete").GetComponent<LevelGenerator>();
@@ -47,7 +49,7 @@ public class Room : MonoBehaviour
         //Debug.Log(string.Format("Horizontal Bound ({0}, {1}) _ player X({2})", transform.position.x - UNITESCALE, transform.position.x + UNITESCALE, playerTransform.position.x));
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         // TODO: check if that player is in this room area
         CheckIfPlayerInThisRoom();
@@ -84,13 +86,13 @@ public class Room : MonoBehaviour
             isPlayerInThisRoom = true;
             if (!isMessageSent)
             {
-                GameManager.curRoom = this;
                 isMessageSent = true;
                 if (!isRoomCleared && !isTimeStart)
                 {
                     startTime = Time.time;
                     isTimeStart = true;
                 }
+                GameManager.SetCurrentRoom(this);
             }
 
         }else
@@ -102,7 +104,7 @@ public class Room : MonoBehaviour
 
     public void CheckIfThisRoomIsClear()
     {
-        if (monsterCollection.childCount == 0)
+        if (monsterCollection != null && monsterCollection.childCount == 0)
         {
             isRoomCleared = true;
             if (isTimeStart)
@@ -223,7 +225,7 @@ public class Room : MonoBehaviour
         return temp;
     }
 
-    public string getName()
+    public virtual string getName()
     {
         string temp = "";
 
