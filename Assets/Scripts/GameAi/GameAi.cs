@@ -19,6 +19,8 @@ public static class GameAi
     public static float levelScore = 9999;
 
     public static List<Room> playerRoute = new List<Room>();
+    public static int GridRow, GridCol;
+    public static Room[,] roomGrid { get; set; }
     
     
 

@@ -11,7 +11,7 @@ public class EmptyRoom : Room
 
     protected override void Update() {  }
 
-    public override string getName()
+    public override string GetName()
     {
         return "wall";
     }

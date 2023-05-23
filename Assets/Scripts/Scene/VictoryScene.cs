@@ -17,10 +17,11 @@ public class VictoryScene : MonoBehaviour
     {
         if (Time.time > timeEnterScene + inputCoolDownDuration)
         {
-            if (Input.anyKey)
+            if (Input.anyKey && !Input.GetKey(KeyCode.M) && !Input.GetKey(KeyCode.Backspace))
             {
                 LoadMainMenu();
             }
+            
         }
     }
 

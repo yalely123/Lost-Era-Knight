@@ -12,6 +12,7 @@ public class Room : MonoBehaviour
                 isRoomCleared = false,
                 isAddedToRoute = false;
 
+    public string roomName = "Not Set Name Yet";
     
     private int UNITESCALE = (53/2);
     public int gridPosX, gridPosY;
@@ -28,8 +29,8 @@ public class Room : MonoBehaviour
     public GameObject finishPortal;
     public GameObject doors;
     public Transform monsterCollection;
-
-
+    [SerializeField]
+    private Minimap minimap;
 
     protected virtual void Start()
     {
@@ -42,11 +43,10 @@ public class Room : MonoBehaviour
         playerSpawnPoint.Find("Player");
         SetBoolDoor();
 
-
-        // for testing
-        //SpawnDoor();
         isDoorSpawned = true;
         //Debug.Log(string.Format("Horizontal Bound ({0}, {1}) _ player X({2})", transform.position.x - UNITESCALE, transform.position.x + UNITESCALE, playerTransform.position.x));
+
+        minimap = GameObject.Find("Canvas").GetComponent<Minimap>();
     }
 
     protected virtual void Update()
@@ -93,6 +93,8 @@ public class Room : MonoBehaviour
                     isTimeStart = true;
                 }
                 GameManager.SetCurrentRoom(this);
+                if (minimap != null) { minimap.UpdateMinimapAtPosition(); }
+                
             }
 
         }else
@@ -225,7 +227,7 @@ public class Room : MonoBehaviour
         return temp;
     }
 
-    public virtual string getName()
+    public virtual string GetName()
     {
         string temp = "";
 

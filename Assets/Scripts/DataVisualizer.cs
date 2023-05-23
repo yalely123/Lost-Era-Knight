@@ -34,7 +34,7 @@ public class DataVisualizer : MonoBehaviour
         int i = 0, m = GameAi.playerRoute.Count;
         foreach(Room r in GameAi.playerRoute)
         {
-            s += r.getName();
+            s += r.GetName();
             if (i < m-1)
             {
                 s += " -> ";
@@ -53,7 +53,7 @@ public class DataVisualizer : MonoBehaviour
         healthRemain = GameAi.healthRemain;
         routeString = UpdateRoute();
         content = string.Format("Level Score: {3:0}\nTime(sec): {0:0}\nMonster Kill Count: {1}\nHealth Remain: {2}\nCurrentRoom: {5}\nRoute({6}): {4}",
-            time, monsterKill, healthRemain, levelScore, routeString, GameManager.curRoom.getName(), GameAi.playerRoute.Count);
+            time, monsterKill, healthRemain, levelScore, routeString, GameManager.curRoom.GetName(), GameAi.playerRoute.Count);
     }
 
 }

@@ -17,8 +17,8 @@ public class LevelGenerator : MonoBehaviour
     private GameObject wholeMap; // Parent Game Object that contain all map tiles in hierarchie
     
     public static Room[,] rooms; // array that contain all room
-    public Room startRoom;
-    public Room finishRoom;
+    public static Room startRoom, finishRoom;
+    private Room forInspecStartRoom, forInspecFinishRoom;
 
     public GameObject fakeRoom,
                       nextTile;
@@ -38,6 +38,17 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField]
     private Transform player;
 
+    [SerializeField]
+    private Minimap minimap;
+
+    private void Awake()
+    {
+        rooms = new Room[gridSizeX, gridSizeY];
+        player = GameObject.Find("Player").GetComponent<Transform>();
+        GameAi.GridCol = gridSizeX;
+        GameAi.GridRow = gridSizeY;
+    }
+
     private void Start()
     {
         isFinishGenerating = false;
@@ -46,18 +57,18 @@ public class LevelGenerator : MonoBehaviour
             maxAmountRoom = Random.Range(3, 8);
         }
         amountRoom = maxAmountRoom;
-        player = GameObject.Find("Player").GetComponent<Transform>();
         if (player == null)
         {
             throw new System.ArgumentException("Cannot find player gameobject");
         }
-        rooms = new Room[gridSizeX, gridSizeY];
         //amountRoom = GameAi.maxRooms;
         roomConnectQ = new Queue<Room>();
         randSetOfFinishRoom = new List<Room>();
         GenerateNewLevel();
         isFinishGenerating = true;
-        //CreateStartRoom();
+        minimap.GenerateMiniMap();
+        forInspecStartRoom = startRoom; 
+        forInspecFinishRoom = finishRoom;
     }
 
     private void Update()
@@ -120,7 +131,7 @@ public class LevelGenerator : MonoBehaviour
             amountRoom--;
 
             // for adding to set that we will random to be the finish room
-            if (rooms[gridPosX, gridPosY].getName().Length == 1 && rooms[gridPosX, gridPosY] != startRoom)
+            if (rooms[gridPosX, gridPosY].GetName().Length == 1 && rooms[gridPosX, gridPosY] != startRoom)
             {
                 randSetOfFinishRoom.Add(rooms[gridPosX, gridPosY]);
             }
@@ -478,11 +489,27 @@ public class LevelGenerator : MonoBehaviour
             randSetOfFinishRoom[temp].SpawnFinishPortal();
             finishRoom = randSetOfFinishRoom[temp];
 
-            
+            UpdateGameAIGrid();
+
             LogRoomsArray();
             
         }
 
+    }
+
+    public static void UpdateGameAIGrid()
+    {
+        if (GameAi.roomGrid == null)
+        {
+            GameAi.roomGrid = new Room[gridSizeX, gridSizeY];
+        }
+        for (int y = 0; y < gridSizeY; y++)
+        {
+            for (int x = 0; x < gridSizeX; x++)
+            {
+                GameAi.roomGrid[x, y] = rooms[x, y];
+            }
+        }
     }
 
     public void LogRoomsArray()
@@ -508,6 +535,7 @@ public class LevelGenerator : MonoBehaviour
         }
         Debug.Log(roomGridLog);
     }
+
     public void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;

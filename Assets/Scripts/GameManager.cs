@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Room forViewCurRoom;
     public static bool isDoorShouldBeClosed;
-    //private static bool isAddedToRoute = false;
+
 
 
     private void Awake()
@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
         {
             throw new System.ArgumentException("Cannot find player transform");
         }
+       
     }
 
     private void Start()
@@ -154,8 +155,8 @@ public class GameManager : MonoBehaviour
             GameAi.playerRoute.Add(curRoom);
             curRoom.isAddedToRoute = true;
             Debug.Log("Trying to add room in player route, route member: " + GameAi.playerRoute.Count);
+            curRoom.istraveled = true;
         }
-
     }
 
     private void ForcedEndGamePlay() 
@@ -170,14 +171,16 @@ public class GameManager : MonoBehaviour
         isGameStopped = true;
         isGameRunning = false;
 
-        if (levelGen.finishRoom.isTimeStart)
+        if (LevelGenerator.finishRoom.isTimeStart)
         {
-            levelGen.finishRoom.clearTime = Time.time;
-            levelGen.finishRoom.isTimeStart = false;
-            levelGen.finishRoom.playTime = levelGen.finishRoom.startTime - levelGen.finishRoom.clearTime;
+            LevelGenerator.finishRoom.clearTime = Time.time;
+            LevelGenerator.finishRoom.isTimeStart = false;
+            LevelGenerator.finishRoom.playTime = LevelGenerator.finishRoom.startTime - LevelGenerator.finishRoom.clearTime;
         }
-        
+
+        LevelGenerator.UpdateGameAIGrid();
         SceneManager.LoadScene("Victory");
+
     }
 
     public static void LoadGameOverScene()
@@ -185,6 +188,8 @@ public class GameManager : MonoBehaviour
         isGameRunning = false;
         isGamePaused = true;
         Debug.Log("Go to Game Over Scene");
+
+        LevelGenerator.UpdateGameAIGrid();
         SceneManager.LoadScene("Game Over");
     }
 
