@@ -16,6 +16,8 @@ public class DataVisualizer : MonoBehaviour
     private void Start()
     {
         startTime = Time.time;
+
+        GameAi.LogAllRouteName();
     }
 
     private void Update()

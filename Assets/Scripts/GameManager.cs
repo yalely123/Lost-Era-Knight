@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
         {
             throw new System.ArgumentException("Cannot find player transform");
         }
+
+        
        
     }
 
@@ -179,6 +181,7 @@ public class GameManager : MonoBehaviour
         }
 
         LevelGenerator.UpdateGameAIGrid();
+        isPlayerReachFinishPortal = false;
         SceneManager.LoadScene("Victory");
 
     }

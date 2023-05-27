@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 
 public class LevelGenerator : MonoBehaviour
@@ -41,12 +42,16 @@ public class LevelGenerator : MonoBehaviour
     [SerializeField]
     private Minimap minimap;
 
+    
+
     private void Awake()
     {
         rooms = new Room[gridSizeX, gridSizeY];
         player = GameObject.Find("Player").GetComponent<Transform>();
         GameAi.GridCol = gridSizeX;
         GameAi.GridRow = gridSizeY;
+
+        
     }
 
     private void Start()
@@ -79,6 +84,9 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
+    
+
+    #region Level Generating
 
     public void CreateStartRoom()
     {
@@ -512,6 +520,8 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
+    #endregion
+
     public void LogRoomsArray()
     {
         string roomGridLog = "";
@@ -535,6 +545,7 @@ public class LevelGenerator : MonoBehaviour
         }
         Debug.Log(roomGridLog);
     }
+
 
     public void OnDrawGizmos()
     {

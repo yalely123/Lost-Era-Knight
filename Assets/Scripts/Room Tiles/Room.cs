@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Room : MonoBehaviour
 {
@@ -47,23 +48,16 @@ public class Room : MonoBehaviour
         //Debug.Log(string.Format("Horizontal Bound ({0}, {1}) _ player X({2})", transform.position.x - UNITESCALE, transform.position.x + UNITESCALE, playerTransform.position.x));
 
         minimap = GameObject.Find("Canvas").GetComponent<Minimap>();
+
     }
 
     protected virtual void Update()
     {
-        // TODO: check if that player is in this room area
+       
         CheckIfPlayerInThisRoom();
         CheckIfThisRoomIsClear();
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            if (isDoorSpawned)
-            {
-                OpenDoor();
-            }
-            else {
-                CloseDoor();
-            }
-        }
+        CheckIfThisIsNotGameScene();
+       
         if (GameManager.isDoorShouldBeClosed)
         {
             CloseDoor();
@@ -74,37 +68,41 @@ public class Room : MonoBehaviour
         
     }
 
-    public void CheckIfPlayerInThisRoom()
+    private void CheckIfPlayerInThisRoom()
     {
         // Debug.Log("Check Player in Room Function");
-        if (playerTransform.position.x < transform.position.x + (UNITESCALE - 3) 
-            && playerTransform.position.x > transform.position.x - (UNITESCALE - 3)
-            && playerTransform.position.y < transform.position.y + (UNITESCALE - 3)
-            && playerTransform.position.y > transform.position.y - (UNITESCALE - 3))
+        if (playerTransform != null)
         {
-            //Debug.Log("Player is now in this room");
-            isPlayerInThisRoom = true;
-            if (!isMessageSent)
+            if (playerTransform.position.x < transform.position.x + (UNITESCALE - 3)
+                && playerTransform.position.x > transform.position.x - (UNITESCALE - 3)
+                && playerTransform.position.y < transform.position.y + (UNITESCALE - 3)
+                && playerTransform.position.y > transform.position.y - (UNITESCALE - 3))
             {
-                isMessageSent = true;
-                if (!isRoomCleared && !isTimeStart)
+                //Debug.Log("Player is now in this room");
+                isPlayerInThisRoom = true;
+                if (!isMessageSent)
                 {
-                    startTime = Time.time;
-                    isTimeStart = true;
-                }
-                GameManager.SetCurrentRoom(this);
-                if (minimap != null) { minimap.UpdateMinimapAtPosition(); }
-                
-            }
+                    isMessageSent = true;
+                    if (!isRoomCleared && !isTimeStart)
+                    {
+                        startTime = Time.time;
+                        isTimeStart = true;
+                    }
+                    GameManager.SetCurrentRoom(this);
+                    if (minimap != null) { minimap.UpdateMinimapAtPosition(); }
 
-        }else
-        {
-            isPlayerInThisRoom = false;
-            isMessageSent = false;
+                }
+
+            }
+            else
+            {
+                isPlayerInThisRoom = false;
+                isMessageSent = false;
+            }
         }
     }
 
-    public void CheckIfThisRoomIsClear()
+    private void CheckIfThisRoomIsClear()
     {
         if (monsterCollection != null && monsterCollection.childCount == 0)
         {
@@ -115,6 +113,15 @@ public class Room : MonoBehaviour
                 playTime = clearTime - startTime;
                 isTimeStart = false;
             }
+        }
+    }
+
+    private void CheckIfThisIsNotGameScene()
+    {
+        string sceneName = SceneManager.GetActiveScene().name;
+        if (sceneName != "Game")
+        {
+            KillAllMonsterInRoom(false);
         }
     }
 
@@ -257,11 +264,15 @@ public class Room : MonoBehaviour
         //isDoorAlreadyClose = false;
     }
 
-    public void KillAllMonsterInRoom()
+    public void KillAllMonsterInRoom(bool isCountKill = true)
     {
         foreach (Transform monster in monsterCollection)
         {
             monster.SendMessage("ReceiveDamage", 999);
+            if (!isCountKill)
+            {
+                GameAi.monsterKillCount--;
+            }
         }
     }
 

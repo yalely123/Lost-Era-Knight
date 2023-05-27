@@ -103,6 +103,11 @@ public class PlayerController : MonoBehaviour
             }
         }
 
+        if (Input.GetKeyDown(KeyCode.G))
+        {
+            godModeOn = !godModeOn;
+        }
+
     }
     private void ApplyMovement()
     {

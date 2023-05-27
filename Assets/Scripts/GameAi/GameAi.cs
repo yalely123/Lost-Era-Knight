@@ -62,4 +62,14 @@ public static class GameAi
         monsterKillCount = 0;
         playerRoute.Clear();
     }
+
+    public static void LogAllRouteName()
+    {
+        string s = "";
+        foreach(Room r in playerRoute)
+        {
+            s += r.GetName();
+        }
+        Debug.Log(s);
+    }
 }

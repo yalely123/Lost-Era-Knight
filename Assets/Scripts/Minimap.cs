@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Minimap : MonoBehaviour
 {
@@ -43,12 +44,30 @@ public class Minimap : MonoBehaviour
         }
 
         isMinimapShown = false;
+
+        if (SceneManager.GetActiveScene().name != "Game" && LevelGenerator.rooms != null)
+        {
+            allRooms = LevelGenerator.rooms;
+            col = LevelGenerator.gridSizeX;
+            row = LevelGenerator.gridSizeY;
+            GenerateMiniMap();
+        }
     }
 
     private void Update()
     {
         CheckKeyboardInput();
         ShowMinimap();
+
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            string s = "";
+            foreach (Room r in GameAi.playerRoute)
+            {
+                s += r.GetName() + ", ";
+            }
+            Debug.Log(s);
+        }
     }
 
     private void CheckKeyboardInput()
@@ -61,7 +80,6 @@ public class Minimap : MonoBehaviour
 
     private void ShowMinimap()
     {
-
         minimap.SetActive(isMinimapShown);
     }
 
