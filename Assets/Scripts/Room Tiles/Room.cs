@@ -68,6 +68,8 @@ public class Room : MonoBehaviour
         
     }
 
+    #region All Check Function
+
     private void CheckIfPlayerInThisRoom()
     {
         // Debug.Log("Check Player in Room Function");
@@ -124,6 +126,8 @@ public class Room : MonoBehaviour
             KillAllMonsterInRoom(false);
         }
     }
+
+    #endregion
 
     public void BringPlayerToStartPosition() // bring player to player start point of this tile
     {
@@ -276,6 +280,8 @@ public class Room : MonoBehaviour
         }
     }
 
+    #region Data Visualization such as Log and Gizmos
+
     public void LogAllRoomData()
     {
         string s = string.Format("Game Object Name = {9}\nisTraveled = {0}\nhasDoor: top = {1}, right = {2}, bottom = {3}, left = {4}" +
@@ -289,5 +295,7 @@ public class Room : MonoBehaviour
         Gizmos.color = Color.green;
         Gizmos.DrawWireCube(transform.position, new Vector2(2*UNITESCALE-6, 2*UNITESCALE-6));
     }
+
+    #endregion
 
 }

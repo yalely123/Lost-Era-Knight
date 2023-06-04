@@ -67,7 +67,7 @@ public class PlayerHealth : MonoBehaviour
 
     public void ReceiveDamage(float amount, float xPos) // this funciton is for receive damage and calculate how much to decrease health
     {
-        if (!isHitable || controller.godModeOn)
+        if (!isHitable || PlayerController.godModeOn)
         {
             return;
         }

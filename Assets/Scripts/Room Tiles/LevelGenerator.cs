@@ -7,19 +7,22 @@ using UnityEngine.SceneManagement;
 
 public class LevelGenerator : MonoBehaviour
 {
+    public bool isUseScore = false;
+
     public static bool isFinishGenerating;
-    public bool isRandomMaxAmountRoom;
+    //public bool isRandomMaxAmountRoom;
     public static int gridSizeX = 7, gridSizeY = 5;
     public int UNITSCALE = 53; // mean that if we spawn room at (0,0) next right room will spawn (53, 0)
     public int maxAmountRoom, amountRoom;
+    public float score, levelScore;
     public int startPosX, startPosY;
+    public bool isFirstRun = false;
     
     [SerializeField]
     private GameObject wholeMap; // Parent Game Object that contain all map tiles in hierarchie
     
     public static Room[,] rooms; // array that contain all room
     public static Room startRoom, finishRoom;
-    private Room forInspecStartRoom, forInspecFinishRoom;
 
     public GameObject fakeRoom,
                       nextTile;
@@ -56,24 +59,34 @@ public class LevelGenerator : MonoBehaviour
 
     private void Start()
     {
+        // Set up for Object
         isFinishGenerating = false;
-        if (isRandomMaxAmountRoom)
-        {
-            maxAmountRoom = Random.Range(3, 8);
-        }
-        amountRoom = maxAmountRoom;
+        
         if (player == null)
         {
             throw new System.ArgumentException("Cannot find player gameobject");
         }
-        //amountRoom = GameAi.maxRooms;
+
+        // Set up before map generating
         roomConnectQ = new Queue<Room>();
         randSetOfFinishRoom = new List<Room>();
+        if (isUseScore)
+        {
+            score = GameAi.levelScore;
+            levelScore = score;
+        }
+
+        
+        //------------Map Start Generating-------------
         GenerateNewLevel();
+        //------------Map End Generating---------------
+
+
+        // Set up after map generating
         isFinishGenerating = true;
         minimap.GenerateMiniMap();
-        forInspecStartRoom = startRoom; 
-        forInspecFinishRoom = finishRoom;
+        //GameAi.CalculateLevelScore();
+        GameAi.runNum++;
     }
 
     private void Update()
@@ -82,8 +95,9 @@ public class LevelGenerator : MonoBehaviour
         {
             LogRoomsArray();
         }
-    }
+        isFirstRun = GameAi.isFirstRun;
 
+    }
     
 
     #region Level Generating
@@ -93,7 +107,7 @@ public class LevelGenerator : MonoBehaviour
         int randSpawnX = Random.Range(0, gridSizeX); // create random x and y position for position of starting room
         int randSpawnY = Random.Range(0, gridSizeY);
         List<GameObject> randSet = GetRandomPrefabSet(randSpawnX, randSpawnY);
-        int randIndex = Random.Range(0, randSet.Count-1);
+        int randIndex = Random.Range(0, randSet.Count);
         GameObject newRoomTile = Instantiate(randSet[randIndex], new Vector2(randSpawnX * UNITSCALE, randSpawnY * UNITSCALE), Quaternion.identity); // instantiate tile that's randomed to random position
         newRoomTile.transform.parent = wholeMap.transform; // bring gameObject of new room that we created to be a child of map gameObject in hierarchy
         Room newRoom = newRoomTile.GetComponent<Room>(); // set current room to be the room which has just created
@@ -106,10 +120,16 @@ public class LevelGenerator : MonoBehaviour
             rooms[randSpawnX, randSpawnY].SetBoolDoor();
         }
         else
-            Debug.Log(string.Format("Something went wrong: room array in this position({0}, {1}) already has room before adding in array", randSpawnX, randSpawnX));
-        
+            throw new System.ArgumentException((string.
+                Format("Something went wrong: room array in this position({0}, {1}) already has room before adding in array", randSpawnX, randSpawnY)));
 
-        amountRoom--;
+
+        amountRoom++;
+        if (isUseScore)
+        {
+            string roomName = rooms[randSpawnX, randSpawnY].GetName();
+            score -= GameAi.allRoomWeight[roomName];
+        }
 
         startPosX = randSpawnX;
         startPosY = randSpawnY;
@@ -121,9 +141,10 @@ public class LevelGenerator : MonoBehaviour
     {
         // instantiate room that random from connectable tile set and then set up that room
 
-        //Debug.Log("Log from CreateNewRoom function");
+        //int randIndex = Random.Range(0, randSet.Count);
 
-        int randIndex = Random.Range(0, randSet.Count - 1);
+        int randIndex = RandomWithWeight(randSet);
+        
         GameObject newRoomTile = Instantiate(randSet[randIndex], 
                     new Vector2(gridPosX * UNITSCALE, gridPosY * UNITSCALE), Quaternion.identity);
         newRoomTile.transform.parent = wholeMap.transform;
@@ -136,7 +157,7 @@ public class LevelGenerator : MonoBehaviour
             rooms[gridPosX, gridPosY].SetBoolDoor();
             rooms[gridPosX, gridPosY].LogAllRoomData();
             roomConnectQ.Enqueue(rooms[gridPosX, gridPosY]);
-            amountRoom--;
+            amountRoom++;
 
             // for adding to set that we will random to be the finish room
             if (rooms[gridPosX, gridPosY].GetName().Length == 1 && rooms[gridPosX, gridPosY] != startRoom)
@@ -149,6 +170,12 @@ public class LevelGenerator : MonoBehaviour
         { 
             throw new System.ArgumentException((string.
                 Format("Something went wrong: room array in this position({0}, {1}) already has room before adding in array", gridPosX, gridPosY))); 
+        }
+
+        if (isUseScore)
+        {
+            string roomName = rooms[gridPosX, gridPosY].GetName();
+            score -= GameAi.allRoomWeight[roomName];
         }
     }
 
@@ -394,7 +421,7 @@ public class LevelGenerator : MonoBehaviour
 
     public void GenerateNewLevel()
     {
-        if (amountRoom != maxAmountRoom)
+        if (amountRoom > maxAmountRoom)
         {
             throw new System.ArgumentException("At start: Max amount rooms != amount room or something went wrong before start generating level");
         } else
@@ -416,10 +443,22 @@ public class LevelGenerator : MonoBehaviour
 
 
             int i = 0;
-            //while (roomConnectQ.Count > 0 && i < 4)
-            while (roomConnectQ.Count > 0 && amountRoom > 0)
+            bool condition = false;
+            if (isUseScore)
             {
-                Debug.Log("Room number: " + (i +2));
+                condition = roomConnectQ.Count > 0 && score > 0;
+            }
+            else
+            {
+                condition = roomConnectQ.Count > 0 && amountRoom < maxAmountRoom;
+            }
+
+
+            while (condition)
+            //while (roomConnectQ.Count > 0 && amountRoom < maxAmountRoom)
+            {
+                Debug.Log("Room number: " + (i +2) + "\nScore = " + score);
+
                 currentRoom = roomConnectQ.Peek(); // peek method returns what queue will dequeue next
                 rooms[currentRoom.gridPosX, currentRoom.gridPosY].SetBoolDoor();
 
@@ -427,35 +466,46 @@ public class LevelGenerator : MonoBehaviour
                 //Debug.Log("Current Room name = " + currentRoom.name);
                 // random that which door is open we will go for it
                 List<char> allSide = currentRoom.getAllConnectableDoor();
-                Debug.Log(string.Format("this room has top = {0}, right = {1}, bottom = {2}, left = {3}", currentRoom.hasTopDoor, currentRoom.hasRightDoor, currentRoom.hasBottomDoor, currentRoom.hasLeftDoor));
+                //Debug.Log(string.Format("this room has top = {0}, right = {1}, bottom = {2}, left = {3}", currentRoom.hasTopDoor, currentRoom.hasRightDoor, currentRoom.hasBottomDoor, currentRoom.hasLeftDoor));
                 //Debug.Log("allSide value = " + allSide.Count);
 
                 
                 if (allSide.Count > 0)
                 {
-                    int index = Random.Range(0, allSide.Count-1);
+                    int index = Random.Range(0, allSide.Count);
                     // choose/random room from side that we gonna connect
                     if (allSide[index] == 'T') {
-                        Debug.Log(string.Format("adding to top side of current room ({0})", currentRoom.name));
+                        //Debug.Log(string.Format("adding to top side of current room ({0})", currentRoom.name));
                         CreateNewRoom(GetRandomPrefabSet(currentRoom.gridPosX, currentRoom.gridPosY + 1), currentRoom.gridPosX, currentRoom.gridPosY + 1);
                         
                     }
                     else if (allSide[index] == 'R') {
-                        Debug.Log(string.Format("adding to right side of current room ({0})", currentRoom.name));
+                        //Debug.Log(string.Format("adding to right side of current room ({0})", currentRoom.name));
                         CreateNewRoom(GetRandomPrefabSet(currentRoom.gridPosX + 1, currentRoom.gridPosY), currentRoom.gridPosX + 1, currentRoom.gridPosY);
                         
                     }
                     else if (allSide[index] == 'B') {
-                        Debug.Log(string.Format("adding to bottom side of current room ({0})", currentRoom.name));
+                        //Debug.Log(string.Format("adding to bottom side of current room ({0})", currentRoom.name));
                         CreateNewRoom(GetRandomPrefabSet(currentRoom.gridPosX, currentRoom.gridPosY - 1), currentRoom.gridPosX, currentRoom.gridPosY - 1);
                         
                     }
                     else{ // allside[index] == 'L'
-                        Debug.Log(string.Format("adding to left side of current room ({0})", currentRoom.name));
+                        //Debug.Log(string.Format("adding to left side of current room ({0})", currentRoom.name));
                         CreateNewRoom(GetRandomPrefabSet(currentRoom.gridPosX - 1, currentRoom.gridPosY), currentRoom.gridPosX - 1, currentRoom.gridPosY );
                         
                     }
                     i++;
+
+                    // design while loop condition between using score and not using it
+                    if (isUseScore)
+                    {
+                        condition = roomConnectQ.Count > 0 && score > 0;
+                    }
+                    else
+                    {
+                        condition = roomConnectQ.Count > 0 && amountRoom < maxAmountRoom;
+                    }
+
                 }
 
                 currentRoom.SetBoolDoor();
@@ -467,16 +517,7 @@ public class LevelGenerator : MonoBehaviour
                 }
                 Debug.Log(string.Format("Room ->{0}<-'s connectable door({1}): {2}", currentRoom.name, allSide.Count, curRoomDoorAvailable));
 
-                // edit later zone
-                //if (roomConnectQ.Count > 0) { roomConnectQ.Dequeue(); }
-                // end zone
-
-                /*
-                if (!currentRoom.hasBottomDoor && !currentRoom.hasLeftDoor && !currentRoom.hasRightDoor && currentRoom.hasTopDoor)
-                {
-                    roomConnectQ.Dequeue();
-                }
-                */
+                // Check that this room need to Dequeue or not
                 if (allSide.Count == 0)
                 {
                     roomConnectQ.Dequeue();
@@ -488,19 +529,26 @@ public class LevelGenerator : MonoBehaviour
                     currentQ += r.name + ", ";
                 }
                 Debug.Log("Now, Queu contain: " + currentQ);
-            
-            
+
+
+                // testing updating condition as variable
+                condition = roomConnectQ.Count > 0 && amountRoom < maxAmountRoom;
             }
 
             CloseAllOpenDoorAfterGeneratingMap();
-            int temp = Random.Range(0, randSetOfFinishRoom.Count - 1);
+            int temp = Random.Range(0, randSetOfFinishRoom.Count);
             randSetOfFinishRoom[temp].SpawnFinishPortal();
             finishRoom = randSetOfFinishRoom[temp];
 
             UpdateGameAIGrid();
 
             LogRoomsArray();
-            
+
+            if (GameAi.isFirstRun)
+            {
+                GameAi.isFirstRun = false;
+            }
+
         }
 
     }
@@ -521,6 +569,81 @@ public class LevelGenerator : MonoBehaviour
     }
 
     #endregion
+
+    public int RandomWithWeight(List<GameObject> randSet)
+    {
+        // finding distance between map average time and room set time
+        float indicator = GameAi.wholeMapAverageTime;
+        Dictionary<string, float> distance = new Dictionary<string, float>();
+        float sumDis = 0;
+        foreach(GameObject gb in randSet)
+        {
+            string s = "";
+            foreach (char c in gb.name)
+            {
+                if (c == 'T' || c == 'R' || c == 'B' || c == 'L')
+                {
+                    s += c;
+                }
+            }
+            distance.Add(s, Mathf.Abs(indicator - GameAi.allRoomWeight[s]));
+            sumDis += GameAi.allRoomWeight[s];
+        }
+
+        Dictionary<string, float> weight = new Dictionary<string, float>();
+        float sumWeight = 0;
+        foreach(GameObject gb in randSet)
+        {
+            string s = "";
+            foreach (char c in gb.name)
+            {
+                if (c == 'T' || c == 'R' || c == 'B' || c == 'L')
+                {
+                    s += c;
+                }
+            }
+            float weightToAdd = (sumDis - distance[s]) / sumDis;
+            weight.Add(s, weightToAdd);
+            sumWeight += weightToAdd;
+        }
+
+        float rand = Random.value * sumWeight;
+
+        string namePick = "";
+        foreach (KeyValuePair<string, float> w in weight)
+        {
+            if (rand < w.Value)
+            {
+                namePick = w.Key;
+                break;
+            }
+            rand -= w.Value;
+        }
+
+
+        int i = 0;
+        foreach(GameObject gb in randSet)
+        {
+            string s = "";
+            foreach (char c in gb.name)
+            {
+                if (c == 'T' || c == 'R' || c == 'B' || c == 'L')
+                {
+                    s += c;
+                }
+            }
+            if (namePick == s)
+            {
+                break;
+            }
+            i++;
+        }
+
+
+        return i;
+    }
+
+    #region Data Visualisation such as Log and Gizmos
 
     public void LogRoomsArray()
     {
@@ -553,5 +676,8 @@ public class LevelGenerator : MonoBehaviour
         Gizmos.DrawWireCube(new Vector2(transform.position.x + ((gridSizeX-1) * UNITSCALE/2) , transform.position.y + ((gridSizeY / 2) * UNITSCALE)),
             new Vector2(gridSizeX * UNITSCALE, gridSizeY * UNITSCALE));
     }
+
+    #endregion
+
 }
 

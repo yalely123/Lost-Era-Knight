@@ -18,6 +18,8 @@ public class PauseMenu : MonoBehaviour
     {
         Debug.Log("Go to main menu");
         GameManager.ClosePauseMenu();
+        GameManager.isGamePaused = true;
+        GameAi.isVictory = false;
         SceneManager.LoadScene("Main Menu");
     }
 }

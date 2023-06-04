@@ -44,8 +44,11 @@ public class GameManager : MonoBehaviour
             throw new System.ArgumentException("Cannot find player transform");
         }
 
-        
-       
+        if (!GameAi.isFirstSetupWeight)
+        {
+            GameAi.FirstSetUpAllRoomWeight();
+        }
+
     }
 
     private void Start()
@@ -74,10 +77,14 @@ public class GameManager : MonoBehaviour
         CheckKeyBoardInput();
         CheckIfPlayerReachFinishPortal();
         CheckIfDoorNeedToClose();
+        //CheckWhatScene();
 
         forViewCurRoom = curRoom;
-        
+
+
     }
+
+    #region Check Function
 
     private void CheckKeyBoardInput ()
     {
@@ -147,6 +154,18 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void CheckWhatScene()
+    {
+        if (SceneManager.GetActiveScene().name == "Game")
+        {
+            if (!GameAi.isFirstSetupWeight)
+            {
+                GameAi.FirstSetUpAllRoomWeight();
+            }
+        }
+    }
+
+    #endregion
 
     public static void SetCurrentRoom(Room r)
     {
@@ -160,6 +179,8 @@ public class GameManager : MonoBehaviour
             curRoom.istraveled = true;
         }
     }
+
+    #region About Loading Scene
 
     private void ForcedEndGamePlay() 
     {
@@ -177,22 +198,30 @@ public class GameManager : MonoBehaviour
         {
             LevelGenerator.finishRoom.clearTime = Time.time;
             LevelGenerator.finishRoom.isTimeStart = false;
-            LevelGenerator.finishRoom.playTime = LevelGenerator.finishRoom.startTime - LevelGenerator.finishRoom.clearTime;
+            LevelGenerator.finishRoom.playTime = LevelGenerator.finishRoom.clearTime - LevelGenerator.finishRoom.startTime;
         }
 
         LevelGenerator.UpdateGameAIGrid();
         isPlayerReachFinishPortal = false;
-        SceneManager.LoadScene("Victory");
+        GameAi.isVictory = true;
 
+        //GameAi.AdjustWeight();
+        GameAi.CalculateLevelScore();
+
+        SceneManager.LoadScene("Victory");
     }
 
     public static void LoadGameOverScene()
     {
         isGameRunning = false;
         isGamePaused = true;
+        GameAi.isVictory = false;
         Debug.Log("Go to Game Over Scene");
-
         LevelGenerator.UpdateGameAIGrid();
+
+        //GameAi.AdjustWeight();
+        GameAi.CalculateLevelScore();
+
         SceneManager.LoadScene("Game Over");
     }
 
@@ -231,6 +260,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
     }
 
-
+    #endregion
 
 }

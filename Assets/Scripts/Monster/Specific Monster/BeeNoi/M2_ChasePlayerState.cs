@@ -70,8 +70,12 @@ public class M2_ChasePlayerState : ChasePlayerState
         isPlayerInChasingCircleRange = entity.CheckPlayerInChasingCircleRange();
         isNeedToFlip = entity.CheckIfNeedToFlip();
         isPlayerInAttackCircleRange = entity.CheckPlayerInAttackCircleRange();
-        attackPositionDistance = Vector2.Distance(monster.aliveGO.transform.position,
-            new Vector2(entity.playerTransform.position.x + (-5 * entity.facingDirection), entity.playerTransform.position.y + 5));
+        if (monster.aliveGO.transform != null)
+        {
+            attackPositionDistance = Vector2.Distance(monster.aliveGO.transform.position,
+                new Vector2(entity.playerTransform.position.x + (-5 * entity.facingDirection), entity.playerTransform.position.y + 5));
+
+        }
     }
 
     private void flyTowardPlayer(float speed)

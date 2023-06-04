@@ -221,7 +221,7 @@ public class Entity : MonoBehaviour
 
     public virtual void Die()
     {
-        Debug.Log("Monster Die");
+        //Debug.Log("Monster Die");
         Destroy(gameObject);
         GameAi.monsterKillCount += 1;
     }

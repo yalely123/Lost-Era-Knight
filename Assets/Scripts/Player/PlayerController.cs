@@ -47,7 +47,7 @@ public class PlayerController : MonoBehaviour
     public Transform wallCheck;
     public LayerMask whatIsGround;
 
-    public bool godModeOn = false;
+    public static bool godModeOn = false;
 
     void Start()
     {
@@ -106,6 +106,15 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.G))
         {
             godModeOn = !godModeOn;
+            string s;
+            if (godModeOn)
+            {
+                s = "On";
+            }else
+            {
+                s = "Off";
+            }
+            Debug.Log("God Mode is turning " + s);
         }
 
     }

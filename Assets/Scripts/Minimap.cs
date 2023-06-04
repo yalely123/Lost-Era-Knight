@@ -66,7 +66,7 @@ public class Minimap : MonoBehaviour
             {
                 s += r.GetName() + ", ";
             }
-            Debug.Log(s);
+            // Debug.Log(s);
         }
     }
 
